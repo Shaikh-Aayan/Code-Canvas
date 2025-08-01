@@ -3,19 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindMapr - Professional Mind Mapping</title>
+    <title>MindMapr Retro - Mind Mapping for Students</title>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --background: #1a1a2e;
-            --primary: #162447;
-            --secondary: #1f4068;
-            --accent: #e43f5a;
-            --text: #f1f1f1;
-            --node-bg: #0f3460;
-            --grid-color: rgba(31, 64, 104, 0.2);
-            --border-radius: 8px;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --dark-blue: #0f1a2c;
+            --neon-pink: #ff2a6d;
+            --neon-cyan: #05d9e8;
+            --light-cyan: #d1f7ff;
+            --grid-color: rgba(255, 255, 255, 0.1);
+            --node-bg: #1d2b4a;
+            --sidebar-bg: rgba(15, 26, 44, 0.95);
+            --header-bg: rgba(15, 26, 44, 0.85);
+            --text-light: #ffffff;
+            --text-muted: #a0b3c6;
+            --success: #05e8ba;
+            --warning: #ffcc00;
+            --danger: #ff2a6d;
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * {
@@ -26,13 +33,33 @@
         }
 
         body {
-            background: var(--background);
-            color: var(--text);
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #1a1f2d 100%);
+            color: var(--text-light);
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            transition: var(--transition);
+            position: relative;
+        }
+
+        /* Retro Scanlines Effect */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.3;
         }
 
         .app-container {
@@ -42,16 +69,18 @@
             overflow: hidden;
         }
 
-        /* Header Styles - Professional Design */
+        /* Header Styles - Retro Design */
         header {
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-            padding: 12px 24px;
+            background: var(--header-bg);
+            color: var(--text-light);
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
             z-index: 100;
-            border-bottom: 1px solid rgba(229, 67, 90, 0.3);
+            border-bottom: 1px solid var(--neon-cyan);
+            backdrop-filter: blur(5px);
         }
 
         .logo {
@@ -62,45 +91,60 @@
 
         .logo-icon {
             font-size: 28px;
-            background: var(--accent);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(5, 217, 232, 0.7);
         }
 
         .logo h1 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .controls {
             display: flex;
-            gap: 12px;
+            gap: 15px;
             align-items: center;
         }
 
         .btn {
-            background: rgba(31, 64, 104, 0.7);
-            border: 1px solid rgba(229, 67, 90, 0.3);
+            background: transparent;
+            border: 1px solid var(--neon-cyan);
             border-radius: var(--border-radius);
-            color: var(--text);
-            padding: 8px 16px;
+            color: var(--light-cyan);
+            padding: 10px 20px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 8px;
             transition: var(--transition);
-            font-size: 14px;
-            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(5, 217, 232, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn:hover {
-            background: rgba(229, 67, 90, 0.3);
+            background: rgba(5, 217, 232, 0.1);
+            box-shadow: 0 0 15px rgba(5, 217, 232, 0.4);
             transform: translateY(-2px);
         }
 
@@ -117,13 +161,14 @@
             position: absolute;
             top: 100%;
             right: 0;
-            background: var(--primary);
+            background: var(--sidebar-bg);
             border-radius: var(--border-radius);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             z-index: 1;
-            min-width: 180px;
+            min-width: 220px;
             overflow: hidden;
-            border: 1px solid rgba(229, 67, 90, 0.3);
+            border: 1px solid var(--neon-cyan);
+            backdrop-filter: blur(10px);
         }
 
         .export-dropdown:hover .dropdown-content {
@@ -138,41 +183,47 @@
 
         .dropdown-content button {
             width: 100%;
-            padding: 10px 16px;
+            padding: 12px 16px;
             text-align: left;
             background: transparent;
             border: none;
-            color: var(--text);
+            color: var(--text-light);
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 14px;
+            gap: 12px;
+            font-size: 16px;
+            border-bottom: 1px solid rgba(5, 217, 232, 0.1);
         }
 
         .dropdown-content button:hover {
-            background: rgba(229, 67, 90, 0.2);
+            background: rgba(5, 217, 232, 0.1);
+            color: var(--neon-cyan);
+        }
+
+        .dropdown-content button i {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
         }
 
         .dark-mode-toggle {
             background: none;
             border: none;
-            font-size: 24px;
+            color: var(--light-cyan);
             cursor: pointer;
-            color: var(--text);
-            transition: transform 0.3s;
-            width: 40px;
-            height: 40px;
+            font-size: 24px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            transition: transform 0.3s;
+            padding: 8px;
             border-radius: 50%;
         }
 
         .dark-mode-toggle:hover {
-            background: rgba(31, 64, 104, 0.3);
-            transform: rotate(15deg);
+            background: rgba(5, 217, 232, 0.1);
+            transform: rotate(20deg);
         }
 
         /* Main Content */
@@ -183,28 +234,30 @@
             position: relative;
         }
 
-        /* Sidebar Styles - Professional */
+        /* Sidebar Styles - Retro */
         .sidebar {
             width: 280px;
-            background: rgba(16, 22, 58, 0.8);
-            border-right: 1px solid rgba(229, 67, 90, 0.2);
+            background: var(--sidebar-bg);
             padding: 20px;
             display: flex;
             flex-direction: column;
-            transition: var(--transition);
+            transition: all 0.5s ease;
             overflow-y: auto;
             z-index: 50;
-            backdrop-filter: blur(5px);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+            border-right: 1px solid var(--neon-cyan);
+            backdrop-filter: blur(10px);
         }
 
         .sidebar h2 {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            color: var(--text);
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            color: var(--neon-cyan);
             display: flex;
             align-items: center;
             gap: 12px;
-            font-weight: 500;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(5, 217, 232, 0.3);
         }
 
         .tools {
@@ -215,10 +268,10 @@
         }
 
         .tool-btn {
-            background: rgba(31, 64, 104, 0.5);
-            border: 1px solid rgba(229, 67, 90, 0.3);
+            background: rgba(29, 43, 74, 0.7);
+            border: 1px solid var(--neon-cyan);
             border-radius: var(--border-radius);
-            padding: 15px;
+            padding: 15px 10px;
             text-align: center;
             cursor: pointer;
             transition: var(--transition);
@@ -226,42 +279,66 @@
             flex-direction: column;
             align-items: center;
             gap: 12px;
-            color: var(--text);
-            font-weight: 500;
+            color: var(--text-light);
+            font-weight: 600;
             position: relative;
             overflow: hidden;
         }
 
+        .tool-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--neon-cyan);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
         .tool-btn:hover {
+            background: rgba(5, 217, 232, 0.1);
+            box-shadow: 0 0 15px rgba(5, 217, 232, 0.2);
             transform: translateY(-3px);
-            border-color: var(--accent);
+        }
+
+        .tool-btn:hover::after {
+            transform: scaleX(1);
         }
 
         .tool-btn.active {
-            background: rgba(229, 67, 90, 0.3);
-            border-color: var(--accent);
+            background: rgba(5, 217, 232, 0.15);
+            border-color: var(--neon-pink);
+        }
+
+        .tool-btn.active::after {
+            background: var(--neon-pink);
+            transform: scaleX(1);
         }
 
         .tool-btn i {
             font-size: 28px;
+            color: var(--neon-cyan);
         }
 
         .section {
             margin-bottom: 25px;
             padding: 15px;
-            background: rgba(31, 64, 104, 0.3);
+            background: rgba(29, 43, 74, 0.3);
             border-radius: var(--border-radius);
-            border: 1px dashed rgba(229, 67, 90, 0.3);
+            border: 1px solid rgba(5, 217, 232, 0.2);
         }
 
         .section-title {
-            font-size: 1rem;
-            color: var(--text);
+            font-size: 1.1rem;
+            color: var(--neon-cyan);
             margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .color-palette {
@@ -276,39 +353,58 @@
             height: 32px;
             border-radius: 50%;
             cursor: pointer;
-            border: 2px solid var(--primary);
+            border: 2px solid var(--dark-blue);
+            transition: var(--transition);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .color-option::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 50%;
+            opacity: 0;
             transition: var(--transition);
         }
 
         .color-option:hover {
-            transform: scale(1.15);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(5, 217, 232, 0.4);
         }
 
-        .color-option.active {
-            border-color: var(--accent);
-            transform: scale(1.15);
-            box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--accent);
+        .color-option.active::after {
+            opacity: 1;
         }
 
         .confidence-slider {
             width: 100%;
             margin: 20px 0;
             -webkit-appearance: none;
-            height: 6px;
-            border-radius: 3px;
-            background: linear-gradient(to right, #e43f5a, #1f4068, #1a1a2e);
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, var(--danger), var(--warning), var(--success));
             outline: none;
         }
 
         .confidence-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
-            background: var(--accent);
-            border: 2px solid var(--background);
+            background: var(--neon-cyan);
+            border: 3px solid var(--dark-blue);
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 0 10px rgba(5, 217, 232, 0.7);
+            transition: var(--transition);
+        }
+
+        .confidence-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
         }
 
         .timer-controls {
@@ -319,41 +415,42 @@
 
         .timer-btn {
             flex: 1;
-            padding: 8px;
+            padding: 10px;
             border-radius: var(--border-radius);
-            border: none;
-            background: rgba(31, 64, 104, 0.5);
-            color: var(--text);
+            border: 1px solid var(--neon-cyan);
+            background: transparent;
+            color: var(--text-light);
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
             transition: var(--transition);
         }
 
         .timer-btn:hover {
-            background: rgba(229, 67, 90, 0.3);
-            transform: translateY(-2px);
+            background: rgba(5, 217, 232, 0.1);
+            box-shadow: 0 0 10px rgba(5, 217, 232, 0.3);
         }
 
         .timer-display {
             text-align: center;
-            font-size: 1.8rem;
-            font-weight: 600;
+            font-size: 2.2rem;
+            font-weight: bold;
             margin: 15px 0;
-            color: var(--text);
+            color: var(--neon-cyan);
             padding: 10px;
             border-radius: var(--border-radius);
             font-family: 'Courier New', monospace;
+            text-shadow: 0 0 10px rgba(5, 217, 232, 0.5);
             letter-spacing: 2px;
         }
 
-        /* Canvas Area - Professional Design */
+        /* Canvas Area - Retro Design */
         .canvas-container {
             flex: 1;
             position: relative;
             overflow: hidden;
-            background-color: var(--primary);
+            background-color: var(--dark-blue);
             background-image: 
-                radial-gradient(circle at center, transparent 0%, rgba(31, 64, 104, 0.1) 100%);
+                radial-gradient(circle at center, rgba(255, 42, 109, 0.03) 0%, transparent 80%);
         }
 
         #mindmap-canvas {
@@ -389,43 +486,48 @@
             position: absolute;
             background-color: var(--node-bg);
             border-radius: var(--border-radius);
-            border: 1px solid rgba(229, 67, 90, 0.3);
-            min-width: 160px;
-            min-height: 120px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--neon-cyan);
+            min-width: 180px;
+            min-height: 140px;
             cursor: move;
             z-index: 10;
             overflow: hidden;
             transition: var(--transition);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(2px);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         .node:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 15px rgba(5, 217, 232, 0.3);
+            border-color: var(--neon-pink);
         }
 
         .node-header {
             padding: 12px 15px;
-            border-bottom: 1px solid rgba(229, 67, 90, 0.2);
+            border-bottom: 1px solid rgba(5, 217, 232, 0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(31, 64, 104, 0.5);
+            background: rgba(5, 217, 232, 0.1);
         }
 
         .node-title {
-            font-weight: 600;
+            font-weight: 700;
             cursor: text;
             outline: none;
             max-width: 80%;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            color: var(--text);
-            font-size: 16px;
-            letter-spacing: 0.5px;
+            color: var(--neon-cyan);
+            font-size: 18px;
+            text-shadow: 0 0 5px rgba(5, 217, 232, 0.5);
         }
 
         .node-controls {
@@ -434,22 +536,23 @@
         }
 
         .node-btn {
-            background: rgba(229, 67, 90, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             border: none;
-            color: var(--text);
+            color: var(--text-light);
             cursor: pointer;
             font-size: 16px;
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 4px;
+            border-radius: 50%;
             transition: var(--transition);
         }
 
         .node-btn:hover {
-            background: rgba(229, 67, 90, 0.3);
+            background: rgba(255, 42, 109, 0.2);
+            color: var(--neon-pink);
             transform: rotate(15deg);
         }
 
@@ -458,22 +561,30 @@
             min-height: 80px;
             cursor: text;
             outline: none;
-            font-size: 14px;
+            background: transparent;
+            font-size: 16px;
             line-height: 1.5;
-            background: rgba(15, 52, 96, 0.5);
+            color: var(--text-light);
         }
 
         .node-resize {
             position: absolute;
-            width: 16px;
-            height: 16px;
-            background: var(--accent);
+            width: 20px;
+            height: 20px;
+            background: var(--neon-cyan);
             border-radius: 50%;
             bottom: 0;
             right: 0;
             cursor: nwse-resize;
             z-index: 20;
-            border: 2px solid var(--background);
+            border: 2px solid var(--dark-blue);
+            box-shadow: 0 0 10px rgba(5, 217, 232, 0.5);
+            transition: var(--transition);
+        }
+
+        .node-resize:hover {
+            background: var(--neon-pink);
+            transform: scale(1.2);
         }
 
         .connection {
@@ -481,8 +592,9 @@
             pointer-events: none;
             z-index: 5;
             height: 3px;
-            background: var(--accent);
+            background: var(--neon-cyan);
             transform-origin: 0 0;
+            box-shadow: 0 0 8px rgba(5, 217, 232, 0.5);
         }
 
         .connection:after {
@@ -494,32 +606,48 @@
             height: 0;
             border-top: 7px solid transparent;
             border-bottom: 7px solid transparent;
-            border-left: 14px solid var(--accent);
+            border-left: 14px solid var(--neon-cyan);
         }
 
         .add-node-btn {
             position: absolute;
             bottom: 30px;
             right: 30px;
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            background: var(--accent);
-            color: var(--text);
-            border: none;
-            font-size: 32px;
+            background: radial-gradient(circle, var(--neon-pink) 0%, #ff0066 100%);
+            color: white;
+            border: 3px solid var(--dark-blue);
+            font-size: 36px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 25px rgba(255, 42, 109, 0.5);
             z-index: 100;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: var(--transition);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { 
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 42, 109, 0.7);
+            }
+            70% { 
+                transform: scale(1.05);
+                box-shadow: 0 0 0 15px rgba(255, 42, 109, 0);
+            }
+            100% { 
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 42, 109, 0);
+            }
         }
 
         .add-node-btn:hover {
             transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 6px 20px rgba(228, 63, 90, 0.5);
+            animation: none;
         }
 
         .zoom-controls {
@@ -528,83 +656,160 @@
             left: 30px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
             z-index: 100;
         }
 
         .zoom-btn {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: rgba(31, 64, 104, 0.7);
-            color: var(--text);
-            border: 1px solid rgba(229, 67, 90, 0.3);
-            font-size: 20px;
+            background: rgba(29, 43, 74, 0.7);
+            color: var(--neon-cyan);
+            border: 1px solid var(--neon-cyan);
+            font-size: 24px;
             cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
             transition: var(--transition);
-            backdrop-filter: blur(5px);
         }
 
         .zoom-btn:hover {
             transform: scale(1.1);
-            background: rgba(229, 67, 90, 0.3);
+            background: rgba(5, 217, 232, 0.2);
+            box-shadow: 0 0 15px rgba(5, 217, 232, 0.4);
         }
 
         .connection-label {
             position: absolute;
             background: var(--node-bg);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 6px 15px;
+            border-radius: 30px;
+            font-size: 14px;
             pointer-events: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             z-index: 15;
-            border: 1px solid var(--accent);
-            font-weight: 500;
-            color: var(--text);
+            border: 1px solid var(--neon-cyan);
+            font-weight: 600;
+            color: var(--neon-cyan);
             text-align: center;
-            min-width: 70px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            min-width: 80px;
+            text-shadow: 0 0 5px rgba(5, 217, 232, 0.5);
         }
 
         .confidence-display {
-            height: 8px;
-            background: rgba(31, 64, 104, 0.5);
-            border-radius: 4px;
-            margin-top: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin-top: 15px;
             overflow: hidden;
-            border: 1px solid rgba(229, 67, 90, 0.2);
+            border: 1px solid rgba(5, 217, 232, 0.3);
         }
 
         .confidence-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--secondary));
-            border-radius: 4px;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+            border-radius: 5px;
             transition: width 0.5s ease;
         }
 
-        /* Bubble effect */
+        /* Modal Styles - Retro */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--sidebar-bg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--neon-cyan);
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(5, 217, 232, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 217, 232, 0.1);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            color: var(--neon-cyan);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: transform 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--neon-pink);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 25px;
+            background: rgba(15, 26, 44, 0.5);
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(5, 217, 232, 0.3);
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            background: rgba(5, 217, 232, 0.1);
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+
+        /* Floating Bubbles */
         .bubble {
             position: absolute;
             border-radius: 50%;
-            background: rgba(229, 67, 90, 0.3);
+            background: radial-gradient(circle, rgba(5, 217, 232, 0.2) 0%, transparent 70%);
+            z-index: 0;
             pointer-events: none;
-            z-index: 1000;
-            animation: bubble-pop 0.6s forwards;
+            animation: floatBubble 15s infinite linear;
         }
 
-        @keyframes bubble-pop {
-            0% {
-                transform: scale(0);
+        @keyframes floatBubble {
+            0% { 
+                transform: translateY(100vh) scale(0.5); 
+                opacity: 0;
+            }
+            10% { 
                 opacity: 0.7;
             }
-            50% {
+            90% { 
                 opacity: 0.5;
             }
-            100% {
-                transform: scale(2);
+            100% { 
+                transform: translateY(-100px) scale(1.2); 
                 opacity: 0;
             }
         }
@@ -625,7 +830,7 @@
             }
             
             .logo h1 {
-                font-size: 1.2rem;
+                font-size: 1.3rem;
             }
             
             .btn span {
@@ -633,97 +838,161 @@
             }
             
             .btn {
-                padding: 10px;
+                padding: 12px;
             }
             
             .btn i {
                 margin: 0;
-                font-size: 20px;
+                font-size: 24px;
             }
+        }
+
+        /* Retro Terminal Effect */
+        .retro-terminal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--neon-cyan);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            color: var(--neon-cyan);
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.6;
+            box-shadow: 0 0 20px rgba(5, 217, 232, 0.5);
+            z-index: 100;
+            display: none;
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--neon-cyan);
+            padding-bottom: 10px;
+        }
+
+        .terminal-content {
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        .terminal-input {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .terminal-prompt {
+            color: var(--neon-pink);
+            margin-right: 10px;
+        }
+
+        .terminal-input input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+            padding: 5px 0;
         }
     </style>
 </head>
 <body>
+    <!-- Floating bubbles -->
+    <div class="bubble" style="width: 80px; height: 80px; left: 10%; animation-duration: 20s;"></div>
+    <div class="bubble" style="width: 120px; height: 120px; left: 30%; animation-duration: 25s;"></div>
+    <div class="bubble" style="width: 60px; height: 60px; left: 70%; animation-duration: 18s;"></div>
+    <div class="bubble" style="width: 100px; height: 100px; left: 85%; animation-duration: 22s;"></div>
+
     <div class="app-container">
         <header>
             <div class="logo">
-                <div class="logo-icon">🧠</div>
-                <h1>MindMapr Pro</h1>
+                <span class="logo-icon"><i class="fas fa-brain"></i></span>
+                <h1>MindMapr Retro</h1>
             </div>
             <div class="controls">
                 <button class="btn" id="save-btn">
-                    <i>💾</i>
+                    <i class="fas fa-save"></i>
                     <span>Save</span>
                 </button>
                 <button class="btn" id="load-btn">
-                    <i>📂</i>
+                    <i class="fas fa-folder-open"></i>
                     <span>Load</span>
                 </button>
                 <div class="export-dropdown">
                     <button class="btn">
-                        <i>📤</i>
+                        <i class="fas fa-file-export"></i>
                         <span>Export</span>
                     </button>
                     <div class="dropdown-content">
                         <button id="export-png">
-                            <i>🖼️</i> Export as PNG
+                            <i class="fas fa-image"></i> Export as PNG
                         </button>
                         <button id="export-json">
-                            <i>📝</i> Export as JSON
+                            <i class="fas fa-code"></i> Export as JSON
                         </button>
                         <button id="export-text">
-                            <i>📋</i> Export as Text
+                            <i class="fas fa-file-alt"></i> Export as Text
                         </button>
                     </div>
                 </div>
                 <button class="btn" id="clear-btn">
-                    <i>🧹</i>
+                    <i class="fas fa-broom"></i>
                     <span>Clear</span>
                 </button>
-                <button class="dark-mode-toggle" id="dark-mode-toggle">🌙</button>
+                <button class="dark-mode-toggle" id="dark-mode-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
             </div>
         </header>
 
         <div class="main-content">
             <div class="sidebar" id="sidebar">
-                <h2><i>🎨</i> Creative Tools</h2>
+                <h2><i class="fas fa-paint-brush"></i> Creative Tools</h2>
                 
                 <div class="tools">
                     <div class="tool-btn" id="tool-select">
-                        <i>✋</i>
+                        <i class="fas fa-mouse-pointer"></i>
                         <span>Select</span>
                     </div>
                     <div class="tool-btn active" id="tool-node">
-                        <i>🟩</i>
+                        <i class="fas fa-plus-square"></i>
                         <span>Add Idea</span>
                     </div>
                     <div class="tool-btn" id="tool-connect">
-                        <i>🔗</i>
+                        <i class="fas fa-link"></i>
                         <span>Connect</span>
                     </div>
                     <div class="tool-btn" id="tool-text">
-                        <i>✏️</i>
+                        <i class="fas fa-pen"></i>
                         <span>Draw</span>
                     </div>
                 </div>
                 
                 <div class="section">
                     <div class="section-title">
-                        <i>🌈</i> Idea Colors
+                        <i class="fas fa-palette"></i> Idea Colors
                     </div>
                     <div class="color-palette">
-                        <div class="color-option active" style="background-color: #0f3460;" data-color="#0f3460"></div>
-                        <div class="color-option" style="background-color: #1f4068;" data-color="#1f4068"></div>
-                        <div class="color-option" style="background-color: #162447;" data-color="#162447"></div>
-                        <div class="color-option" style="background-color: #1a1a2e;" data-color="#1a1a2e"></div>
-                        <div class="color-option" style="background-color: #e43f5a;" data-color="#e43f5a"></div>
-                        <div class="color-option" style="background-color: #1b998b;" data-color="#1b998b"></div>
+                        <div class="color-option active" style="background-color: #1d2b4a;" data-color="#1d2b4a"></div>
+                        <div class="color-option" style="background-color: #2a3a5c;" data-color="#2a3a5c"></div>
+                        <div class="color-option" style="background-color: #3a4b6d;" data-color="#3a4b6d"></div>
+                        <div class="color-option" style="background-color: #ff2a6d;" data-color="#ff2a6d"></div>
+                        <div class="color-option" style="background-color: #05d9e8;" data-color="#05d9e8"></div>
+                        <div class="color-option" style="background-color: #05e8ba;" data-color="#05e8ba"></div>
                     </div>
                 </div>
                 
                 <div class="section">
                     <div class="section-title">
-                        <i>📊</i> Confidence Level
+                        <i class="fas fa-chart-line"></i> Confidence Level
                     </div>
                     <input type="range" min="0" max="100" value="80" class="confidence-slider" id="confidence-slider">
                     <div class="confidence-display">
@@ -733,7 +1002,7 @@
                 
                 <div class="section">
                     <div class="section-title">
-                        <i>⏱️</i> Study Timer
+                        <i class="fas fa-clock"></i> Study Timer
                     </div>
                     <div class="timer-display" id="timer-display">25:00</div>
                     <div class="timer-controls">
@@ -744,15 +1013,19 @@
                 
                 <div class="section">
                     <div class="section-title">
-                        <i>✨</i> Special Modes
+                        <i class="fas fa-magic"></i> Special Modes
                     </div>
                     <div class="tool-btn" id="grid-toggle">
-                        <i>🔳</i>
+                        <i class="fas fa-th"></i>
                         <span>Toggle Grid</span>
                     </div>
                     <div class="tool-btn" id="memory-mode">
-                        <i>🤔</i>
+                        <i class="fas fa-brain"></i>
                         <span>Memory Game</span>
+                    </div>
+                    <div class="tool-btn" id="terminal-mode">
+                        <i class="fas fa-terminal"></i>
+                        <span>Terminal Mode</span>
                     </div>
                 </div>
             </div>
@@ -768,6 +1041,40 @@
                     <button class="zoom-btn" id="zoom-out">-</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal for connection labels -->
+    <div class="modal" id="connection-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Connection Label</h3>
+                <button class="modal-close" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>How are these ideas connected?</p>
+                <input type="text" id="connection-label" class="form-control" placeholder="e.g. supports, causes, part of">
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="save-connection">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Retro Terminal -->
+    <div class="retro-terminal" id="terminal">
+        <div class="terminal-header">
+            <div>MindMapr Terminal v1.0</div>
+            <div><i class="fas fa-times" id="close-terminal"></i></div>
+        </div>
+        <div class="terminal-content" id="terminal-content">
+            > Welcome to MindMapr Terminal<br>
+            > Type 'help' for available commands<br>
+            > <br>
+        </div>
+        <div class="terminal-input">
+            <span class="terminal-prompt">></span>
+            <input type="text" id="terminal-input" autocomplete="off">
         </div>
     </div>
 
@@ -787,15 +1094,16 @@
             scrollLeft: 0,
             scrollTop: 0,
             activeTool: 'node',
-            nodeColor: '#0f3460',
+            nodeColor: '#1d2b4a',
             confidenceLevel: 80,
-            darkMode: false,
+            darkMode: true,
             gridVisible: true,
             memoryMode: false,
             timerActive: false,
             timerDuration: 25 * 60, // 25 minutes in seconds
             timerRemaining: 25 * 60,
-            timerInterval: null
+            timerInterval: null,
+            terminalVisible: false
         };
 
         // DOM Elements
@@ -822,17 +1130,63 @@
             confidenceSlider: document.getElementById('confidence-slider'),
             gridToggle: document.getElementById('grid-toggle'),
             memoryModeBtn: document.getElementById('memory-mode'),
+            terminalModeBtn: document.getElementById('terminal-mode'),
             timerStart: document.getElementById('timer-start'),
             timerReset: document.getElementById('timer-reset'),
-            timerDisplay: document.getElementById('timer-display')
+            timerDisplay: document.getElementById('timer-display'),
+            connectionModal: document.getElementById('connection-modal'),
+            connectionLabel: document.getElementById('connection-label'),
+            saveConnection: document.getElementById('save-connection'),
+            closeModal: document.getElementById('close-modal'),
+            terminal: document.getElementById('terminal'),
+            terminalInput: document.getElementById('terminal-input'),
+            terminalContent: document.getElementById('terminal-content'),
+            closeTerminal: document.getElementById('close-terminal')
         };
 
         // Initialize application
         function init() {
-            createSampleMindMap();
+            createBubbles();
             setupEventListeners();
+            createSampleMindMap();
             updateUI();
-            createBubble(100, 100);
+            startAutoSave();
+            playSuccessSound();
+        }
+
+        // Create floating bubbles
+        function createBubbles() {
+            const container = document.body;
+            const bubbleCount = 8;
+            
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                // Random size and position
+                const size = Math.random() * 100 + 50;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 15 + 15;
+                const delay = Math.random() * 10;
+                
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${left}%`;
+                bubble.style.animationDuration = `${duration}s`;
+                bubble.style.animationDelay = `${delay}s`;
+                
+                // Add pop effect on click
+                bubble.addEventListener('click', () => {
+                    bubble.style.animation = 'pop 0.5s forwards';
+                    playPopSound();
+                    setTimeout(() => {
+                        bubble.remove();
+                        createBubbles(); // Create a new bubble to replace the popped one
+                    }, 500);
+                });
+                
+                container.appendChild(bubble);
+            }
         }
 
         // Set up event listeners
@@ -842,7 +1196,6 @@
             document.addEventListener('mouseup', stopPan);
             document.addEventListener('mousemove', panCanvas);
             dom.canvas.addEventListener('wheel', handleZoom);
-            dom.canvas.addEventListener('click', createBubbleAtClick);
             
             // UI Controls
             dom.addNodeBtn.addEventListener('click', addNode);
@@ -868,7 +1221,7 @@
                     document.querySelector('.color-option.active').classList.remove('active');
                     option.classList.add('active');
                     state.nodeColor = option.dataset.color;
-                    createBubble(option.getBoundingClientRect().left, option.getBoundingClientRect().top);
+                    playClickSound();
                 });
             });
             
@@ -876,31 +1229,51 @@
             dom.confidenceSlider.addEventListener('input', (e) => {
                 state.confidenceLevel = e.target.value;
                 document.querySelector('.confidence-fill').style.width = `${state.confidenceLevel}%`;
-                createBubble(e.target.getBoundingClientRect().left, e.target.getBoundingClientRect().top);
             });
             
             // Canvas options
             dom.gridToggle.addEventListener('click', toggleGrid);
             dom.memoryModeBtn.addEventListener('click', toggleMemoryMode);
+            dom.terminalModeBtn.addEventListener('click', toggleTerminal);
             
             // Timer controls
             dom.timerStart.addEventListener('click', toggleTimer);
             dom.timerReset.addEventListener('click', resetTimer);
+            
+            // Connection modal
+            dom.saveConnection.addEventListener('click', saveConnectionLabel);
+            dom.closeModal.addEventListener('click', () => {
+                dom.connectionModal.style.display = 'none';
+            });
+            
+            // Terminal
+            dom.terminalInput.addEventListener('keydown', handleTerminalInput);
+            dom.closeTerminal.addEventListener('click', toggleTerminal);
         }
 
         // Create a sample mind map for first-time users
         function createSampleMindMap() {
-            const centerX = dom.canvasContainer.clientWidth / 2 - 75;
-            const centerY = dom.canvasContainer.clientHeight / 2 - 50;
-            
-            const mainNode = createNode(centerX, centerY, 'Main Concept', 'The central idea of your mind map');
-            const child1 = createNode(centerX - 200, centerY - 150, 'Key Aspect 1', 'Important details about this aspect');
-            const child2 = createNode(centerX + 200, centerY - 150, 'Key Aspect 2', 'Important details about this aspect');
-            const child3 = createNode(centerX - 200, centerY + 150, 'Related Concept', 'Other concepts connected to this');
-            
-            createConnection(mainNode.id, child1.id, 'includes');
-            createConnection(mainNode.id, child2.id, 'leads to');
-            createConnection(mainNode.id, child3.id, 'connects to');
+            if (state.nodes.length === 0) {
+                const centerX = dom.canvasContainer.clientWidth / 2 - 90;
+                const centerY = dom.canvasContainer.clientHeight / 2 - 70;
+                
+                const mainNode = createNode(centerX, centerY, 'Main Topic', 'This is the central idea of your mind map');
+                const child1 = createNode(centerX - 250, centerY - 180, 'Key Concept 1', 'Supporting ideas and details');
+                const child2 = createNode(centerX + 250, centerY - 180, 'Key Concept 2', 'Additional thoughts and connections');
+                const child3 = createNode(centerX - 250, centerY + 180, 'Research', 'Sources and references');
+                const child4 = createNode(centerX + 250, centerY + 180, 'Applications', 'Practical uses and examples');
+                
+                createConnection(mainNode.id, child1.id, 'related to');
+                createConnection(mainNode.id, child2.id, 'leads to');
+                createConnection(mainNode.id, child3.id, 'supported by');
+                createConnection(mainNode.id, child4.id, 'applies to');
+                createConnection(child1.id, child3.id, 'evidence');
+                createConnection(child2.id, child4.id, 'implementation');
+                
+                // Add a fun node
+                const funNode = createNode(centerX + 350, centerY, 'Remember!', 'Mind mapping helps organize thoughts and improve memory');
+                funNode.element.style.backgroundColor = '#ff2a6d';
+            }
         }
 
         // Create a new node
@@ -918,7 +1291,8 @@
                 <div class="node-header">
                     <div class="node-title" contenteditable="true">${title}</div>
                     <div class="node-controls">
-                        <button class="node-btn" data-action="delete">✖️</button>
+                        <button class="node-btn" data-action="color"><i class="fas fa-fill-drip"></i></button>
+                        <button class="node-btn" data-action="delete"><i class="fas fa-times"></i></button>
                     </div>
                 </div>
                 <div class="node-content" contenteditable="true">${content}</div>
@@ -934,11 +1308,23 @@
             const header = node.querySelector('.node-header');
             const resizeHandle = node.querySelector('.node-resize');
             const deleteBtn = node.querySelector('[data-action="delete"]');
+            const colorBtn = node.querySelector('[data-action="color"]');
             
             header.addEventListener('mousedown', startDrag);
             resizeHandle.addEventListener('mousedown', startResize);
             deleteBtn.addEventListener('click', () => {
                 deleteNode(nodeId);
+                playDeleteSound();
+            });
+            colorBtn.addEventListener('click', () => changeNodeColor(nodeId));
+            
+            // Add click event for memory mode
+            node.querySelector('.node-content').addEventListener('click', () => {
+                if (state.memoryMode) {
+                    const content = node.querySelector('.node-content');
+                    content.innerHTML = content.dataset.originalContent || '';
+                    playRevealSound();
+                }
             });
             
             // Add to state
@@ -955,7 +1341,7 @@
                 confidence: state.confidenceLevel
             });
             
-            createBubble(x + 50, y + 50);
+            playCreateSound();
             return state.nodes.find(n => n.id === nodeId);
         }
 
@@ -977,7 +1363,16 @@
                 });
                 
                 state.nodes.splice(nodeIndex, 1);
-                createBubble(node.x, node.y);
+            }
+        }
+
+        // Change node color
+        function changeNodeColor(nodeId) {
+            const node = state.nodes.find(n => n.id === nodeId);
+            if (node) {
+                node.color = state.nodeColor;
+                node.element.style.backgroundColor = state.nodeColor;
+                playColorChangeSound();
             }
         }
 
@@ -1016,6 +1411,7 @@
             });
             
             updateConnection(connectionId);
+            playConnectSound();
             return state.connections.find(c => c.id === connectionId);
         }
 
@@ -1095,6 +1491,7 @@
                 document.removeEventListener('mousemove', drag);
                 document.removeEventListener('mouseup', stopDrag);
                 state.selectedNode = null;
+                playMoveSound();
             }
             
             document.addEventListener('mousemove', drag);
@@ -1118,8 +1515,8 @@
                 const dx = e.clientX - startX;
                 const dy = e.clientY - startY;
                 
-                const newWidth = Math.max(160, startWidth + dx);
-                const newHeight = Math.max(120, startHeight + dy);
+                const newWidth = Math.max(180, startWidth + dx);
+                const newHeight = Math.max(140, startHeight + dy);
                 
                 node.element.style.width = `${newWidth}px`;
                 node.element.style.height = `${newHeight}px`;
@@ -1189,6 +1586,7 @@
         function adjustZoom(delta) {
             state.zoomLevel = Math.min(2, Math.max(0.5, state.zoomLevel + delta));
             dom.canvas.style.transform = `scale(${state.zoomLevel})`;
+            playZoomSound();
         }
 
         // Set active tool
@@ -1204,20 +1602,32 @@
             if (tool === 'node') dom.toolNode.classList.add('active');
             if (tool === 'connect') dom.toolConnect.classList.add('active');
             if (tool === 'text') dom.toolText.classList.add('active');
+            
+            playClickSound();
         }
 
         // Toggle dark mode
         function toggleDarkMode() {
             state.darkMode = !state.darkMode;
             document.body.classList.toggle('dark-mode', state.darkMode);
-            dom.darkModeToggle.textContent = state.darkMode ? '☀️' : '🌙';
+            dom.darkModeToggle.innerHTML = state.darkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            
+            // Update connection colors
+            state.connections.forEach(conn => {
+                if (conn.element) {
+                    conn.element.style.backgroundColor = state.darkMode ? '#05d9e8' : '#ff2a6d';
+                }
+            });
+            
+            playModeChangeSound();
+            saveState();
         }
 
         // Toggle grid visibility
         function toggleGrid() {
             state.gridVisible = !state.gridVisible;
             dom.gridOverlay.style.display = state.gridVisible ? 'block' : 'none';
-            createBubble(dom.gridToggle.getBoundingClientRect().left, dom.gridToggle.getBoundingClientRect().top);
+            playToggleSound();
         }
 
         // Toggle memory mode
@@ -1235,7 +1645,69 @@
                 }
             });
             
-            createBubble(dom.memoryModeBtn.getBoundingClientRect().left, dom.memoryModeBtn.getBoundingClientRect().top);
+            playGameSound();
+        }
+
+        // Toggle terminal
+        function toggleTerminal() {
+            state.terminalVisible = !state.terminalVisible;
+            dom.terminal.style.display = state.terminalVisible ? 'block' : 'none';
+            if (state.terminalVisible) {
+                dom.terminalInput.focus();
+            }
+            playTerminalSound();
+        }
+
+        // Handle terminal input
+        function handleTerminalInput(e) {
+            if (e.key === 'Enter') {
+                const command = dom.terminalInput.value.trim().toLowerCase();
+                dom.terminalInput.value = '';
+                
+                // Add command to terminal
+                dom.terminalContent.innerHTML += `> ${command}<br>`;
+                
+                // Process command
+                let response = '';
+                switch(command) {
+                    case 'help':
+                        response = 'Available commands:<br>' +
+                                   '- help: Show this help<br>' +
+                                   '- clear: Clear canvas<br>' +
+                                   '- save: Save mind map<br>' +
+                                   '- load: Load mind map<br>' +
+                                   '- nodes: Show node count<br>' +
+                                   '- connections: Show connection count<br>' +
+                                   '- exit: Close terminal';
+                        break;
+                    case 'clear':
+                        clearCanvas();
+                        response = 'Canvas cleared!';
+                        break;
+                    case 'save':
+                        saveState();
+                        response = 'Mind map saved!';
+                        break;
+                    case 'load':
+                        loadState();
+                        response = 'Mind map loaded!';
+                        break;
+                    case 'nodes':
+                        response = `Total nodes: ${state.nodes.length}`;
+                        break;
+                    case 'connections':
+                        response = `Total connections: ${state.connections.length}`;
+                        break;
+                    case 'exit':
+                        toggleTerminal();
+                        return;
+                    default:
+                        response = `Unknown command: ${command}. Type 'help' for available commands.`;
+                }
+                
+                dom.terminalContent.innerHTML += `${response}<br> > `;
+                dom.terminalContent.scrollTop = dom.terminalContent.scrollHeight;
+            }
         }
 
         // Start or pause timer
@@ -1249,7 +1721,7 @@
                 state.timerInterval = setInterval(updateTimer, 1000);
                 dom.timerStart.textContent = 'Pause';
             }
-            createBubble(dom.timerStart.getBoundingClientRect().left, dom.timerStart.getBoundingClientRect().top);
+            playTimerSound();
         }
 
         // Reset timer
@@ -1259,7 +1731,7 @@
             state.timerRemaining = state.timerDuration;
             updateTimerDisplay();
             dom.timerStart.textContent = 'Start';
-            createBubble(dom.timerReset.getBoundingClientRect().left, dom.timerReset.getBoundingClientRect().top);
+            playResetSound();
         }
 
         // Update timer
@@ -1269,7 +1741,8 @@
             
             if (state.timerRemaining <= 0) {
                 resetTimer();
-                alert('Timer completed! Take a short break.');
+                showNotification('Timer completed! Take a short break.');
+                playAlarmSound();
             }
         }
 
@@ -1280,37 +1753,418 @@
             dom.timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
-        // Create bubble animation
-        function createBubble(x, y) {
-            const bubble = document.createElement('div');
-            bubble.className = 'bubble';
-            bubble.style.left = `${x}px`;
-            bubble.style.top = `${y}px`;
-            document.body.appendChild(bubble);
+        // Save connection label
+        function saveConnectionLabel() {
+            if (state.connectingNode) {
+                const connection = state.connections.find(c => 
+                    c.from === state.connectingNode.from && c.to === state.connectingNode.to
+                );
+                
+                if (connection) {
+                    const label = dom.connectionLabel.value.trim();
+                    connection.label = label;
+                    
+                    if (label) {
+                        if (!connection.labelElement) {
+                            connection.labelElement = document.createElement('div');
+                            connection.labelElement.className = 'connection-label';
+                            connection.labelElement.dataset.connectionId = connection.id;
+                            dom.canvas.appendChild(connection.labelElement);
+                        }
+                        connection.labelElement.textContent = label;
+                        updateConnection(connection.id);
+                    } else if (connection.labelElement) {
+                        connection.labelElement.remove();
+                        connection.labelElement = null;
+                    }
+                }
+                
+                dom.connectionModal.style.display = 'none';
+                state.connectingNode = null;
+                playSaveSound();
+            }
+        }
+
+        // Save state to localStorage
+        function saveState() {
+            // Update node content from DOM
+            state.nodes.forEach(node => {
+                node.title = node.element.querySelector('.node-title').textContent;
+                node.content = node.element.querySelector('.node-content').textContent;
+                node.confidence = node.element.querySelector('.confidence-fill').style.width.replace('%', '');
+            });
             
-            // Remove bubble after animation completes
+            const data = {
+                nodes: state.nodes.map(node => ({
+                    id: node.id,
+                    x: node.x,
+                    y: node.y,
+                    width: node.width,
+                    height: node.height,
+                    title: node.title,
+                    content: node.content,
+                    color: node.color,
+                    confidence: node.confidence
+                })),
+                connections: state.connections.map(conn => ({
+                    from: conn.from,
+                    to: conn.to,
+                    label: conn.label
+                })),
+                zoomLevel: state.zoomLevel,
+                darkMode: state.darkMode,
+                gridVisible: state.gridVisible
+            };
+            
+            localStorage.setItem('mindmapr-state', JSON.stringify(data));
+            playSaveSound();
+            showNotification('Mind map saved successfully!');
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.left = '50%';
+            notification.style.transform = 'translateX(-50%)';
+            notification.style.backgroundColor = '#1d2b4a';
+            notification.style.color = 'var(--neon-cyan)';
+            notification.style.padding = '15px 25px';
+            notification.style.borderRadius = '30px';
+            notification.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+            notification.style.zIndex = '1000';
+            notification.style.fontWeight = 'bold';
+            notification.style.border = '1px solid var(--neon-cyan)';
+            notification.style.animation = 'slideIn 0.3s, fadeOut 0.3s 2.7s';
+            
+            document.body.appendChild(notification);
+            
             setTimeout(() => {
-                bubble.remove();
-            }, 600);
+                notification.remove();
+            }, 3000);
         }
 
-        // Create bubble at click position
-        function createBubbleAtClick(e) {
-            createBubble(e.clientX, e.clientY);
+        // Load state from localStorage
+        function loadState() {
+            const savedData = localStorage.getItem('mindmapr-state');
+            if (!savedData) return;
+            
+            // Clear existing nodes and connections
+            state.nodes.forEach(node => node.element.remove());
+            state.connections.forEach(conn => {
+                if (conn.element) conn.element.remove();
+                if (conn.labelElement) conn.labelElement.remove();
+            });
+            
+            state.nodes = [];
+            state.connections = [];
+            
+            const data = JSON.parse(savedData);
+            
+            // Restore nodes
+            data.nodes.forEach(nodeData => {
+                const node = createNode(nodeData.x, nodeData.y, nodeData.title, nodeData.content);
+                node.element.style.width = `${nodeData.width}px`;
+                node.element.style.height = `${nodeData.height}px`;
+                node.element.style.backgroundColor = nodeData.color;
+                node.width = nodeData.width;
+                node.height = nodeData.height;
+                node.color = nodeData.color;
+                node.confidence = nodeData.confidence;
+                
+                // Set confidence display
+                const confidenceFill = node.element.querySelector('.confidence-fill');
+                confidenceFill.style.width = `${nodeData.confidence}%`;
+            });
+            
+            // Restore connections
+            data.connections.forEach(connData => {
+                createConnection(connData.from, connData.to, connData.label);
+            });
+            
+            // Restore settings
+            state.zoomLevel = data.zoomLevel || 1;
+            state.darkMode = data.darkMode || false;
+            state.gridVisible = data.gridVisible !== undefined ? data.gridVisible : true;
+            
+            dom.canvas.style.transform = `scale(${state.zoomLevel})`;
+            document.body.classList.toggle('dark-mode', state.darkMode);
+            dom.darkModeToggle.innerHTML = state.darkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            dom.gridOverlay.style.display = state.gridVisible ? 'block' : 'none';
+            
+            // Update UI
+            updateUI();
+            playLoadSound();
+            showNotification('Mind map loaded successfully!');
         }
 
-        // Add node at random position
-        function addNode() {
-            const containerRect = dom.canvasContainer.getBoundingClientRect();
-            const x = Math.random() * (containerRect.width - 200) + 100;
-            const y = Math.random() * (containerRect.height - 150) + 75;
-            createNode(x, y);
+        // Clear canvas
+        function clearCanvas() {
+            if (confirm('Are you sure you want to clear the entire mind map? This cannot be undone.')) {
+                state.nodes.forEach(node => node.element.remove());
+                state.connections.forEach(conn => {
+                    if (conn.element) conn.element.remove();
+                    if (conn.labelElement) conn.labelElement.remove();
+                });
+                
+                state.nodes = [];
+                state.connections = [];
+                state.currentNodeId = 1;
+                state.currentConnectionId = 1;
+                
+                localStorage.removeItem('mindmapr-state');
+                playClearSound();
+                showNotification('Canvas cleared!');
+            }
+        }
+
+        // Export as PNG
+        function exportAsPNG() {
+            html2canvas(dom.canvasContainer).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'mindmapr-export.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                playExportSound();
+            });
+        }
+
+        // Export as JSON
+        function exportAsJSON() {
+            // Update node content from DOM
+            state.nodes.forEach(node => {
+                node.title = node.element.querySelector('.node-title').textContent;
+                node.content = node.element.querySelector('.node-content').textContent;
+                node.confidence = node.element.querySelector('.confidence-fill').style.width.replace('%', '');
+            });
+            
+            const data = {
+                nodes: state.nodes.map(node => ({
+                    id: node.id,
+                    x: node.x,
+                    y: node.y,
+                    width: node.width,
+                    height: node.height,
+                    title: node.title,
+                    content: node.content,
+                    color: node.color,
+                    confidence: node.confidence
+                })),
+                connections: state.connections.map(conn => ({
+                    from: conn.from,
+                    to: conn.to,
+                    label: conn.label
+                }))
+            };
+            
+            const jsonStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonStr], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.download = 'mindmapr-export.json';
+            link.href = url;
+            link.click();
+            
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+            playExportSound();
+        }
+
+        // Export as Text
+        function exportAsText() {
+            // Update node content from DOM
+            state.nodes.forEach(node => {
+                node.title = node.element.querySelector('.node-title').textContent;
+                node.content = node.element.querySelector('.node-content').textContent;
+            });
+            
+            let textContent = 'MindMapr Export\n================\n\n';
+            
+            // Add nodes
+            textContent += 'Nodes:\n';
+            state.nodes.forEach(node => {
+                textContent += `- ${node.title}: ${node.content}\n`;
+            });
+            
+            // Add connections
+            textContent += '\nConnections:\n';
+            state.connections.forEach(conn => {
+                const fromNode = state.nodes.find(n => n.id === conn.from);
+                const toNode = state.nodes.find(n => n.id === conn.to);
+                
+                if (fromNode && toNode) {
+                    textContent += `- ${fromNode.title} ${conn.label || '-->'} ${toNode.title}\n`;
+                }
+            });
+            
+            const blob = new Blob([textContent], {type: 'text/plain'});
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.download = 'mindmapr-export.txt';
+            link.href = url;
+            link.click();
+            
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+            playExportSound();
+        }
+
+        // Start auto-save every 30 seconds
+        function startAutoSave() {
+            setInterval(() => {
+                if (state.nodes.length > 0) {
+                    saveState();
+                }
+            }, 30000);
         }
 
         // Update UI based on state
         function updateUI() {
-            // Update confidence display
-            document.querySelector('.confidence-fill').style.width = `${state.confidenceLevel}%`;
+            // Update tool buttons
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (state.activeTool === 'select') dom.toolSelect.classList.add('active');
+            if (state.activeTool === 'node') dom.toolNode.classList.add('active');
+            if (state.activeTool === 'connect') dom.toolConnect.classList.add('active');
+            if (state.activeTool === 'text') dom.toolText.classList.add('active');
+            
+            // Update memory mode button
+            dom.memoryModeBtn.classList.toggle('active', state.memoryMode);
+            
+            // Update grid visibility
+            dom.gridOverlay.style.display = state.gridVisible ? 'block' : 'none';
+            
+            // Update dark mode toggle
+            dom.darkModeToggle.innerHTML = state.darkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        // Sound effects using Web Audio API
+        function playSound(frequency, duration, type = 'sine') {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.type = type;
+                oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+                
+                gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                
+                oscillator.start();
+                setTimeout(() => oscillator.stop(), duration * 1000);
+            } catch (e) {
+                // Fail silently if audio isn't supported
+            }
+        }
+
+        function playCreateSound() {
+            playSound(523.25, 0.3); // C5
+        }
+
+        function playDeleteSound() {
+            playSound(220, 0.2); // A3
+        }
+
+        function playConnectSound() {
+            playSound(659.25, 0.2); // E5
+            setTimeout(() => playSound(783.99, 0.2), 100); // G5
+        }
+
+        function playMoveSound() {
+            playSound(392, 0.1); // G4
+        }
+
+        function playZoomSound() {
+            playSound(587.33, 0.1); // D5
+        }
+
+        function playClickSound() {
+            playSound(349.23, 0.1); // F4
+        }
+
+        function playColorChangeSound() {
+            playSound(440, 0.1); // A4
+            setTimeout(() => playSound(554.37, 0.1), 80); // C#5
+        }
+
+        function playModeChangeSound() {
+            playSound(329.63, 0.2); // E4
+            setTimeout(() => playSound(493.88, 0.2), 150); // B4
+        }
+
+        function playToggleSound() {
+            playSound(261.63, 0.1); // C4
+        }
+
+        function playGameSound() {
+            playSound(523.25, 0.1); // C5
+            setTimeout(() => playSound(659.25, 0.1), 100); // E5
+            setTimeout(() => playSound(783.99, 0.1), 200); // G5
+        }
+
+        function playTimerSound() {
+            playSound(392, 0.1); // G4
+        }
+
+        function playResetSound() {
+            playSound(261.63, 0.1); // C4
+            setTimeout(() => playSound(329.63, 0.1), 100); // E4
+        }
+
+        function playAlarmSound() {
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => playSound(880, 0.1), i * 200); // A5
+            }
+        }
+
+        function playSaveSound() {
+            playSound(659.25, 0.1); // E5
+            setTimeout(() => playSound(523.25, 0.1), 100); // C5
+        }
+
+        function playLoadSound() {
+            playSound(523.25, 0.1); // C5
+            setTimeout(() => playSound(659.25, 0.1), 100); // E5
+        }
+
+        function playClearSound() {
+            playSound(220, 0.2); // A3
+            setTimeout(() => playSound(164.81, 0.2), 150); // E3
+        }
+
+        function playExportSound() {
+            playSound(659.25, 0.1); // E5
+            setTimeout(() => playSound(783.99, 0.1), 100); // G5
+            setTimeout(() => playSound(1046.50, 0.2), 200); // C6
+        }
+
+        function playSuccessSound() {
+            playSound(523.25, 0.1); // C5
+            setTimeout(() => playSound(659.25, 0.1), 100); // E5
+            setTimeout(() => playSound(783.99, 0.2), 200); // G5
+        }
+
+        function playRevealSound() {
+            playSound(783.99, 0.1); // G5
+            setTimeout(() => playSound(1046.50, 0.2), 100); // C6
+        }
+
+        function playTerminalSound() {
+            playSound(261.63, 0.1, 'square'); // C4
+            setTimeout(() => playSound(392, 0.1, 'square'), 100); // G4
+        }
+
+        function playPopSound() {
+            playSound(200, 0.3, 'sawtooth');
+            setTimeout(() => playSound(150, 0.2, 'sawtooth'), 50);
         }
 
         // Initialize the app when DOM is loaded
