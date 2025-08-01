@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindMapr - Visual Thinking Tool</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --danger: #e63946;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --bg-light: #ffffff;
+            --bg-dark: #121212;
+            --text-light: #333333;
+            --text-dark: #f0f0f0;
+            --node-bg: #ffffff;
+            --canvas-bg: #f0f2f5;
+            --grid-color: rgba(200, 200, 200, 0.2);
+            --border-light: #dee2e6;
+            --border-dark: #444444;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode {
+            --bg-light: #121212;
+            --bg-dark: #1e1e1e;
+            --text-light: #f0f0f0;
+            --text-dark: #e0e0e0;
+            --node-bg: #1e1e1e;
+            --canvas-bg: #121212;
+            --grid-color: rgba(100, 100, 100, 0.15);
+            --border-light: #444444;
+            --border-dark: #555555;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 24px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn i {
+            font-size: 18px;
+        }
+
+        .export-dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1;
+            min-width: 200px;
+            overflow: hidden;
+        }
+
+        .export-dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content button {
+            width: 100%;
+            padding: 10px 16px;
+            text-align: left;
+            background: white;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dropdown-content button:hover {
+            background-color: #f0f2f5;
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background-color: var(--bg-light);
+            border-right: 1px solid var(--border-light);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+            z-index: 50;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+            width: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .sidebar-toggle {
+            position: absolute;
+            top: 70px;
+            left: 280px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 24px;
+            height: 48px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            z-index: 60;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: left 0.3s ease;
+        }
+
+        .sidebar.hidden + .sidebar-toggle {
+            left: 0;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tools {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .tool-btn {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+        }
+
+        .tool-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .tool-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tool-btn i {
+            font-size: 24px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6c757d;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-palette {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.active {
+            border-color: var(--dark);
+            transform: scale(1.1);
+        }
+
+        .confidence-slider {
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .timer-btn {
+            flex: 1;
+            padding: 8px;
+            border-radius: 6px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+        }
+
+        .timer-display {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: var(--primary);
+        }
+
+        /* Canvas Area */
+        .canvas-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--canvas-bg);
+        }
+
+        #mindmap-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform-origin: top left;
+            cursor: grab;
+        }
+
+        #mindmap-canvas.panning {
+            cursor: grabbing;
+        }
+
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .node {
+            position: absolute;
+            background-color: var(--node-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-light);
+            min-width: 150px;
+            min-height: 100px;
+            cursor: move;
+            z-index: 10;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .node:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .node-header {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+
+        .node-title {
+            font-weight: 600;
+            cursor: text;
+            outline: none;
+            max-width: 80%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .node-controls {
+            display: flex;
+            gap: 6px;
+        }
+
+        .node-btn {
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            font-size: 16px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .node-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .node-content {
+            padding: 12px;
+            min-height: 70px;
+            cursor: text;
+            outline: none;
+        }
+
+        .node-resize {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            bottom: 0;
+            right: 0;
+            cursor: nwse-resize;
+            z-index: 20;
+        }
+
+        .connection {
+            position: absolute;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .add-node-btn {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .add-node-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(67, 97, 238, 0.4);
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            border: 1px solid var(--border-light);
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .connection-label {
+            position: absolute;
+            background: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 15;
+            border: 1px solid #ddd;
+            max-width: 120px;
+            text-align: center;
+        }
+
+        .confidence-display {
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--bg-light);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                z-index: 200;
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.visible {
+                transform: translateX(0);
+            }
+            
+            .sidebar-toggle {
+                display: none;
+            }
+            
+            .mobile-toggle {
+                display: flex;
+            }
+            
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+            
+            .btn span {
+                display: none;
+            }
+            
+            .btn i {
+                margin-right: 0;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo">
+                <span class="logo-icon">🧠</span>
+                <h1>MindMapr</h1>
+            </div>
+            <div class="controls">
+                <button class="btn" id="save-btn">
+                    <i>💾</i>
+                    <span>Save</span>
+                </button>
+                <button class="btn" id="load-btn">
+                    <i>📂</i>
+                    <span>Load</span>
+                </button>
+                <div class="export-dropdown">
+                    <button class="btn">
+                        <i>📤</i>
+                        <span>Export</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="export-png">
+                            <i>🖼️</i> Export as PNG
+                        </button>
+                        <button id="export-json">
+                            <i>📝</i> Export as JSON
+                        </button>
+                        <button id="export-text">
+                            <i>📋</i> Export as Text
+                        </button>
+                    </div>
+                </div>
+                <button class="btn" id="clear-btn">
+                    <i>🗑️</i>
+                    <span>Clear</span>
+                </button>
+                <button class="dark-mode-toggle" id="dark-mode-toggle">🌙</button>
+                <button class="mobile-toggle" id="mobile-toggle">☰</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="sidebar" id="sidebar">
+                <h2><i>⚙️</i> Tools & Settings</h2>
+                
+                <div class="tools">
+                    <div class="tool-btn" id="tool-select">
+                        <i>↖️</i>
+                        <span>Select</span>
+                    </div>
+                    <div class="tool-btn active" id="tool-node">
+                        <i>🟩</i>
+                        <span>Node</span>
+                    </div>
+                    <div class="tool-btn" id="tool-connect">
+                        <i>🔗</i>
+                        <span>Connect</span>
+                    </div>
+                    <div class="tool-btn" id="tool-text">
+                        <i>✏️</i>
+                        <span>Text</span>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <i>🎨</i> Node Styling
+                    </div>
+                    <div class="color-palette">
+                        <div class="color-option active" style="background-color: #ffffff;" data-color="#ffffff"></div>
+                        <div class="color-option" style="background-color: #d0f7d0;" data-color="#d0f7d0"></div>
+                        <div class="color-option" style="background-color: #d0e3f7;" data-color="#d0e3f7"></div>
+                        <div class="color-option" style="background-color: #f7f0d0;" data-color="#f7f0d0"></div>
+                        <div class="color-option" style="background-color: #f7d0d0;" data-color="#f7d0d0"></div>
+                        <div class="color-option" style="background-color: #e8d0f7;" data-color="#e8d0f7"></div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <i>📊</i> Confidence Level
+                    </div>
+                    <input type="range" min="0" max="100" value="80" class="confidence-slider" id="confidence-slider">
+                    <div class="confidence-display">
+                        <div class="confidence-fill" style="width: 80%;"></div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <i>⏱️</i> Study Timer
+                    </div>
+                    <div class="timer-display" id="timer-display">25:00</div>
+                    <div class="timer-controls">
+                        <button class="timer-btn" id="timer-start">Start</button>
+                        <button class="timer-btn" id="timer-reset">Reset</button>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <i>🔲</i> Canvas Options
+                    </div>
+                    <div class="tool-btn" id="grid-toggle">
+                        <i>🔳</i>
+                        <span>Toggle Grid</span>
+                    </div>
+                    <div class="tool-btn" id="memory-mode">
+                        <i>🧠</i>
+                        <span>Memory Mode</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="sidebar-toggle" id="sidebar-toggle">☰</button>
+            
+            <div class="canvas-container" id="canvas-container">
+                <div id="mindmap-canvas">
+                    <div class="grid-overlay" id="grid-overlay"></div>
+                    <!-- Nodes will be added here dynamically -->
+                </div>
+                <button class="add-node-btn" id="add-node-btn">+</button>
+                <div class="zoom-controls">
+                    <button class="zoom-btn" id="zoom-in">+</button>
+                    <button class="zoom-btn" id="zoom-out">-</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for connection labels -->
+    <div class="modal" id="connection-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Connection Label</h3>
+                <button class="modal-close" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Enter a label for this connection:</p>
+                <input type="text" id="connection-label" class="form-control" placeholder="e.g. supports, contradicts">
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="save-connection">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // App state
+        const state = {
+            nodes: [],
+            connections: [],
+            selectedNode: null,
+            connectingNode: null,
+            currentNodeId: 1,
+            currentConnectionId: 1,
+            zoomLevel: 1,
+            panning: false,
+            startX: 0,
+            startY: 0,
+            scrollLeft: 0,
+            scrollTop: 0,
+            activeTool: 'node',
+            nodeColor: '#ffffff',
+            confidenceLevel: 80,
+            darkMode: false,
+            gridVisible: true,
+            memoryMode: false,
+            timerActive: false,
+            timerDuration: 25 * 60, // 25 minutes in seconds
+            timerRemaining: 25 * 60,
+            timerInterval: null
+        };
+
+        // DOM Elements
+        const dom = {
+            canvas: document.getElementById('mindmap-canvas'),
+            canvasContainer: document.getElementById('canvas-container'),
+            gridOverlay: document.getElementById('grid-overlay'),
+            addNodeBtn: document.getElementById('add-node-btn'),
+            zoomInBtn: document.getElementById('zoom-in'),
+            zoomOutBtn: document.getElementById('zoom-out'),
+            sidebar: document.getElementById('sidebar'),
+            sidebarToggle: document.getElementById('sidebar-toggle'),
+            darkModeToggle: document.getElementById('dark-mode-toggle'),
+            saveBtn: document.getElementById('save-btn'),
+            loadBtn: document.getElementById('load-btn'),
+            clearBtn: document.getElementById('clear-btn'),
+            exportPngBtn: document.getElementById('export-png'),
+            exportJsonBtn: document.getElementById('export-json'),
+            exportTextBtn: document.getElementById('export-text'),
+            toolSelect: document.getElementById('tool-select'),
+            toolNode: document.getElementById('tool-node'),
+            toolConnect: document.getElementById('tool-connect'),
+            toolText: document.getElementById('tool-text'),
+            colorOptions: document.querySelectorAll('.color-option'),
+            confidenceSlider: document.getElementById('confidence-slider'),
+            gridToggle: document.getElementById('grid-toggle'),
+            memoryModeBtn: document.getElementById('memory-mode'),
+            timerStart: document.getElementById('timer-start'),
+            timerReset: document.getElementById('timer-reset'),
+            timerDisplay: document.getElementById('timer-display'),
+            connectionModal: document.getElementById('connection-modal'),
+            connectionLabel: document.getElementById('connection-label'),
+            saveConnection: document.getElementById('save-connection'),
+            closeModal: document.getElementById('close-modal'),
+            mobileToggle: document.getElementById('mobile-toggle')
+        };
+
+        // Initialize application
+        function init() {
+            loadState();
+            setupEventListeners();
+            createSampleMindMap();
+            updateUI();
+            startAutoSave();
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Canvas interactions
+            dom.canvas.addEventListener('mousedown', startPan);
+            document.addEventListener('mouseup', stopPan);
+            document.addEventListener('mousemove', panCanvas);
+            dom.canvas.addEventListener('wheel', handleZoom);
+            
+            // UI Controls
+            dom.addNodeBtn.addEventListener('click', addNode);
+            dom.zoomInBtn.addEventListener('click', () => adjustZoom(0.1));
+            dom.zoomOutBtn.addEventListener('click', () => adjustZoom(-0.1));
+            dom.sidebarToggle.addEventListener('click', toggleSidebar);
+            dom.darkModeToggle.addEventListener('click', toggleDarkMode);
+            dom.saveBtn.addEventListener('click', saveState);
+            dom.loadBtn.addEventListener('click', loadState);
+            dom.clearBtn.addEventListener('click', clearCanvas);
+            dom.exportPngBtn.addEventListener('click', exportAsPNG);
+            dom.exportJsonBtn.addEventListener('click', exportAsJSON);
+            dom.exportTextBtn.addEventListener('click', exportAsText);
+            
+            // Tool selection
+            dom.toolSelect.addEventListener('click', () => setActiveTool('select'));
+            dom.toolNode.addEventListener('click', () => setActiveTool('node'));
+            dom.toolConnect.addEventListener('click', () => setActiveTool('connect'));
+            dom.toolText.addEventListener('click', () => setActiveTool('text'));
+            
+            // Node styling
+            dom.colorOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelector('.color-option.active').classList.remove('active');
+                    option.classList.add('active');
+                    state.nodeColor = option.dataset.color;
+                });
+            });
+            
+            // Confidence slider
+            dom.confidenceSlider.addEventListener('input', (e) => {
+                state.confidenceLevel = e.target.value;
+                document.querySelector('.confidence-fill').style.width = `${state.confidenceLevel}%`;
+            });
+            
+            // Canvas options
+            dom.gridToggle.addEventListener('click', toggleGrid);
+            dom.memoryModeBtn.addEventListener('click', toggleMemoryMode);
+            
+            // Timer controls
+            dom.timerStart.addEventListener('click', toggleTimer);
+            dom.timerReset.addEventListener('click', resetTimer);
+            
+            // Connection modal
+            dom.saveConnection.addEventListener('click', saveConnectionLabel);
+            dom.closeModal.addEventListener('click', () => {
+                dom.connectionModal.style.display = 'none';
+            });
+            
+            // Mobile toggle
+            dom.mobileToggle.addEventListener('click', () => {
+                dom.sidebar.classList.toggle('visible');
+            });
+        }
+
+        // Create a sample mind map for first-time users
+        function createSampleMindMap() {
+            if (state.nodes.length === 0) {
+                const centerX = dom.canvasContainer.clientWidth / 2 - 75;
+                const centerY = dom.canvasContainer.clientHeight / 2 - 50;
+                
+                const mainNode = createNode(centerX, centerY, 'Main Idea', 'This is the central concept of your mind map');
+                const child1 = createNode(centerX - 200, centerY - 150, 'Branch 1', 'Supporting idea or subtopic');
+                const child2 = createNode(centerX + 200, centerY - 150, 'Branch 2', 'Another supporting idea');
+                const child3 = createNode(centerX - 200, centerY + 150, 'Branch 3', 'Related concept');
+                
+                createConnection(mainNode.id, child1.id, 'supports');
+                createConnection(mainNode.id, child2.id, 'extends');
+                createConnection(mainNode.id, child3.id, 'relates to');
+            }
+        }
+
+        // Create a new node
+        function createNode(x, y, title = 'New Node', content = '') {
+            const nodeId = state.currentNodeId++;
+            const node = document.createElement('div');
+            node.className = 'node';
+            node.id = `node-${nodeId}`;
+            node.style.left = `${x}px`;
+            node.style.top = `${y}px`;
+            node.style.backgroundColor = state.nodeColor;
+            node.dataset.id = nodeId;
+            
+            node.innerHTML = `
+                <div class="node-header">
+                    <div class="node-title" contenteditable="true">${title}</div>
+                    <div class="node-controls">
+                        <button class="node-btn" data-action="color">🎨</button>
+                        <button class="node-btn" data-action="delete">✖️</button>
+                    </div>
+                </div>
+                <div class="node-content" contenteditable="true">${content}</div>
+                <div class="node-resize"></div>
+                <div class="confidence-display">
+                    <div class="confidence-fill" style="width: ${state.confidenceLevel}%"></div>
+                </div>
+            `;
+            
+            dom.canvas.appendChild(node);
+            
+            // Add event listeners for the new node
+            const header = node.querySelector('.node-header');
+            const resizeHandle = node.querySelector('.node-resize');
+            const deleteBtn = node.querySelector('[data-action="delete"]');
+            const colorBtn = node.querySelector('[data-action="color"]');
+            
+            header.addEventListener('mousedown', startDrag);
+            resizeHandle.addEventListener('mousedown', startResize);
+            deleteBtn.addEventListener('click', () => deleteNode(nodeId));
+            colorBtn.addEventListener('click', () => changeNodeColor(nodeId));
+            
+            // Add to state
+            state.nodes.push({
+                id: nodeId,
+                element: node,
+                x: parseInt(node.style.left),
+                y: parseInt(node.style.top),
+                width: node.offsetWidth,
+                height: node.offsetHeight,
+                title: title,
+                content: content,
+                color: state.nodeColor,
+                confidence: state.confidenceLevel
+            });
+            
+            return state.nodes.find(n => n.id === nodeId);
+        }
+
+        // Delete a node
+        function deleteNode(nodeId) {
+            const nodeIndex = state.nodes.findIndex(n => n.id === nodeId);
+            if (nodeIndex !== -1) {
+                const node = state.nodes[nodeIndex];
+                node.element.remove();
+                
+                // Remove any connections involving this node
+                state.connections = state.connections.filter(conn => {
+                    if (conn.from === nodeId || conn.to === nodeId) {
+                        if (conn.element) conn.element.remove();
+                        if (conn.labelElement) conn.labelElement.remove();
+                        return false;
+                    }
+                    return true;
+                });
+                
+                state.nodes.splice(nodeIndex, 1);
+            }
+        }
+
+        // Change node color
+        function changeNodeColor(nodeId) {
+            const node = state.nodes.find(n => n.id === nodeId);
+            if (node) {
+                node.color = state.nodeColor;
+                node.element.style.backgroundColor = state.nodeColor;
+            }
+        }
+
+        // Create connection between two nodes
+        function createConnection(fromId, toId, label = '') {
+            const fromNode = state.nodes.find(n => n.id === fromId);
+            const toNode = state.nodes.find(n => n.id === toId);
+            
+            if (!fromNode || !toNode) return;
+            
+            const connectionId = state.currentConnectionId++;
+            const connection = document.createElement('div');
+            connection.className = 'connection';
+            connection.dataset.id = connectionId;
+            
+            dom.canvas.appendChild(connection);
+            
+            // Create connection label if provided
+            let labelElement = null;
+            if (label) {
+                labelElement = document.createElement('div');
+                labelElement.className = 'connection-label';
+                labelElement.textContent = label;
+                labelElement.dataset.connectionId = connectionId;
+                dom.canvas.appendChild(labelElement);
+            }
+            
+            // Add to state
+            state.connections.push({
+                id: connectionId,
+                element: connection,
+                labelElement: labelElement,
+                from: fromId,
+                to: toId,
+                label: label
+            });
+            
+            updateConnection(connectionId);
+            
+            return state.connections.find(c => c.id === connectionId);
+        }
+
+        // Update connection position and appearance
+        function updateConnection(connectionId) {
+            const connection = state.connections.find(c => c.id === connectionId);
+            if (!connection) return;
+            
+            const fromNode = state.nodes.find(n => n.id === connection.from);
+            const toNode = state.nodes.find(n => n.id === connection.to);
+            
+            if (!fromNode || !toNode) return;
+            
+            const fromRect = fromNode.element.getBoundingClientRect();
+            const toRect = toNode.element.getBoundingClientRect();
+            const canvasRect = dom.canvas.getBoundingClientRect();
+            
+            // Calculate positions relative to canvas
+            const fromX = fromRect.left - canvasRect.left + fromRect.width / 2;
+            const fromY = fromRect.top - canvasRect.top + fromRect.height / 2;
+            const toX = toRect.left - canvasRect.left + toRect.width / 2;
+            const toY = toRect.top - canvasRect.top + toRect.height / 2;
+            
+            // Draw line
+            const length = Math.sqrt((toX - fromX) * (toX - fromX) + (toY - fromY) * (toY - fromY));
+            const angle = Math.atan2(toY - fromY, toX - fromX) * 180 / Math.PI;
+            
+            connection.element.style.width = `${length}px`;
+            connection.element.style.height = '2px';
+            connection.element.style.left = `${fromX}px`;
+            connection.element.style.top = `${fromY}px`;
+            connection.element.style.transform = `rotate(${angle}deg)`;
+            connection.element.style.backgroundColor = state.darkMode ? '#f0f0f0' : '#333';
+            
+            // Position label
+            if (connection.labelElement) {
+                const labelX = (fromX + toX) / 2;
+                const labelY = (fromY + toY) / 2;
+                connection.labelElement.style.left = `${labelX - 60}px`;
+                connection.labelElement.style.top = `${labelY - 15}px`;
+            }
+        }
+
+        // Start dragging a node
+        function startDrag(e) {
+            if (state.activeTool !== 'select' && state.activeTool !== 'node') return;
+            
+            const nodeElement = e.target.closest('.node');
+            if (!nodeElement) return;
+            
+            state.selectedNode = parseInt(nodeElement.dataset.id);
+            const node = state.nodes.find(n => n.id === state.selectedNode);
+            
+            const startX = e.clientX;
+            const startY = e.clientY;
+            const startLeft = parseInt(node.element.style.left);
+            const startTop = parseInt(node.element.style.top);
+            
+            function drag(e) {
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                
+                node.element.style.left = `${startLeft + dx}px`;
+                node.element.style.top = `${startTop + dy}px`;
+                
+                // Update position in state
+                node.x = startLeft + dx;
+                node.y = startTop + dy;
+                
+                // Update all connections for this node
+                state.connections.forEach(conn => {
+                    if (conn.from === node.id || conn.to === node.id) {
+                        updateConnection(conn.id);
+                    }
+                });
+            }
+            
+            function stopDrag() {
+                document.removeEventListener('mousemove', drag);
+                document.removeEventListener('mouseup', stopDrag);
+                state.selectedNode = null;
+            }
+            
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDrag);
+        }
+
+        // Start resizing a node
+        function startResize(e) {
+            const nodeElement = e.target.closest('.node');
+            if (!nodeElement) return;
+            
+            const nodeId = parseInt(nodeElement.dataset.id);
+            const node = state.nodes.find(n => n.id === nodeId);
+            
+            const startX = e.clientX;
+            const startY = e.clientY;
+            const startWidth = node.element.offsetWidth;
+            const startHeight = node.element.offsetHeight;
+            
+            function resize(e) {
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                
+                const newWidth = Math.max(150, startWidth + dx);
+                const newHeight = Math.max(100, startHeight + dy);
+                
+                node.element.style.width = `${newWidth}px`;
+                node.element.style.height = `${newHeight}px`;
+                
+                // Update size in state
+                node.width = newWidth;
+                node.height = newHeight;
+                
+                // Update all connections for this node
+                state.connections.forEach(conn => {
+                    if (conn.from === node.id || conn.to === node.id) {
+                        updateConnection(conn.id);
+                    }
+                });
+            }
+            
+            function stopResize() {
+                document.removeEventListener('mousemove', resize);
+                document.removeEventListener('mouseup', stopResize);
+            }
+            
+            document.addEventListener('mousemove', resize);
+            document.addEventListener('mouseup', stopResize);
+        }
+
+        // Start panning the canvas
+        function startPan(e) {
+            if (e.target.closest('.node')) return;
+            
+            state.panning = true;
+            dom.canvas.classList.add('panning');
+            
+            state.startX = e.pageX - dom.canvas.offsetLeft;
+            state.startY = e.pageY - dom.canvas.offsetTop;
+            state.scrollLeft = dom.canvas.scrollLeft;
+            state.scrollTop = dom.canvas.scrollTop;
+        }
+
+        // Pan the canvas
+        function panCanvas(e) {
+            if (!state.panning) return;
+            
+            e.preventDefault();
+            const x = e.pageX - dom.canvas.offsetLeft;
+            const y = e.pageY - dom.canvas.offsetTop;
+            const walkX = (x - state.startX) * 2;
+            const walkY = (y - state.startY) * 2;
+            
+            dom.canvas.scrollLeft = state.scrollLeft - walkX;
+            dom.canvas.scrollTop = state.scrollTop - walkY;
+        }
+
+        // Stop panning
+        function stopPan() {
+            state.panning = false;
+            dom.canvas.classList.remove('panning');
+        }
+
+        // Handle zoom with mouse wheel
+        function handleZoom(e) {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? -0.1 : 0.1;
+            adjustZoom(delta);
+        }
+
+        // Adjust zoom level
+        function adjustZoom(delta) {
+            state.zoomLevel = Math.min(2, Math.max(0.5, state.zoomLevel + delta));
+            dom.canvas.style.transform = `scale(${state.zoomLevel})`;
+        }
+
+        // Set active tool
+        function setActiveTool(tool) {
+            state.activeTool = tool;
+            
+            // Update UI
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (tool === 'select') dom.toolSelect.classList.add('active');
+            if (tool === 'node') dom.toolNode.classList.add('active');
+            if (tool === 'connect') dom.toolConnect.classList.add('active');
+            if (tool === 'text') dom.toolText.classList.add('active');
+        }
+
+        // Toggle dark mode
+        function toggleDarkMode() {
+            state.darkMode = !state.darkMode;
+            document.body.classList.toggle('dark-mode', state.darkMode);
+            dom.darkModeToggle.textContent = state.darkMode ? '☀️' : '🌙';
+            
+            // Update connection colors
+            state.connections.forEach(conn => {
+                if (conn.element) {
+                    conn.element.style.backgroundColor = state.darkMode ? '#f0f0f0' : '#333';
+                }
+            });
+            
+            saveState();
+        }
+
+        // Toggle grid visibility
+        function toggleGrid() {
+            state.gridVisible = !state.gridVisible;
+            dom.gridOverlay.style.display = state.gridVisible ? 'block' : 'none';
+        }
+
+        // Toggle memory mode
+        function toggleMemoryMode() {
+            state.memoryMode = !state.memoryMode;
+            dom.memoryModeBtn.classList.toggle('active', state.memoryMode);
+            
+            state.nodes.forEach(node => {
+                const content = node.element.querySelector('.node-content');
+                if (state.memoryMode) {
+                    content.dataset.originalContent = content.innerHTML;
+                    content.innerHTML = '❓';
+                } else {
+                    content.innerHTML = content.dataset.originalContent || '';
+                }
+            });
+        }
+
+        // Toggle sidebar visibility
+        function toggleSidebar() {
+            dom.sidebar.classList.toggle('hidden');
+        }
+
+        // Start or pause timer
+        function toggleTimer() {
+            if (state.timerActive) {
+                clearInterval(state.timerInterval);
+                state.timerActive = false;
+                dom.timerStart.textContent = 'Resume';
+            } else {
+                state.timerActive = true;
+                state.timerInterval = setInterval(updateTimer, 1000);
+                dom.timerStart.textContent = 'Pause';
+            }
+        }
+
+        // Reset timer
+        function resetTimer() {
+            clearInterval(state.timerInterval);
+            state.timerActive = false;
+            state.timerRemaining = state.timerDuration;
+            updateTimerDisplay();
+            dom.timerStart.textContent = 'Start';
+        }
+
+        // Update timer
+        function updateTimer() {
+            state.timerRemaining--;
+            updateTimerDisplay();
+            
+            if (state.timerRemaining <= 0) {
+                resetTimer();
+                alert('Timer completed! Take a short break.');
+            }
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(state.timerRemaining / 60);
+            const seconds = state.timerRemaining % 60;
+            dom.timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Save connection label
+        function saveConnectionLabel() {
+            if (state.connectingNode) {
+                const connection = state.connections.find(c => 
+                    c.from === state.connectingNode.from && c.to === state.connectingNode.to
+                );
+                
+                if (connection) {
+                    const label = dom.connectionLabel.value.trim();
+                    connection.label = label;
+                    
+                    if (label) {
+                        if (!connection.labelElement) {
+                            connection.labelElement = document.createElement('div');
+                            connection.labelElement.className = 'connection-label';
+                            connection.labelElement.dataset.connectionId = connection.id;
+                            dom.canvas.appendChild(connection.labelElement);
+                        }
+                        connection.labelElement.textContent = label;
+                        updateConnection(connection.id);
+                    } else if (connection.labelElement) {
+                        connection.labelElement.remove();
+                        connection.labelElement = null;
+                    }
+                }
+                
+                dom.connectionModal.style.display = 'none';
+                state.connectingNode = null;
+            }
+        }
+
+        // Save state to localStorage
+        function saveState() {
+            // Update node content from DOM
+            state.nodes.forEach(node => {
+                node.title = node.element.querySelector('.node-title').textContent;
+                node.content = node.element.querySelector('.node-content').textContent;
+                node.confidence = node.element.querySelector('.confidence-fill').style.width.replace('%', '');
+            });
+            
+            const data = {
+                nodes: state.nodes.map(node => ({
+                    id: node.id,
+                    x: node.x,
+                    y: node.y,
+                    width: node.width,
+                    height: node.height,
+                    title: node.title,
+                    content: node.content,
+                    color: node.color,
+                    confidence: node.confidence
+                })),
+                connections: state.connections.map(conn => ({
+                    from: conn.from,
+                    to: conn.to,
+                    label: conn.label
+                })),
+                zoomLevel: state.zoomLevel,
+                darkMode: state.darkMode,
+                gridVisible: state.gridVisible
+            };
+            
+            localStorage.setItem('mindmapr-state', JSON.stringify(data));
+            alert('Mind map saved successfully!');
+        }
+
+        // Load state from localStorage
+        function loadState() {
+            const savedData = localStorage.getItem('mindmapr-state');
+            if (!savedData) return;
+            
+            // Clear existing nodes and connections
+            state.nodes.forEach(node => node.element.remove());
+            state.connections.forEach(conn => {
+                if (conn.element) conn.element.remove();
+                if (conn.labelElement) conn.labelElement.remove();
+            });
+            
+            state.nodes = [];
+            state.connections = [];
+            
+            const data = JSON.parse(savedData);
+            
+            // Restore nodes
+            data.nodes.forEach(nodeData => {
+                const node = createNode(nodeData.x, nodeData.y, nodeData.title, nodeData.content);
+                node.element.style.width = `${nodeData.width}px`;
+                node.element.style.height = `${nodeData.height}px`;
+                node.element.style.backgroundColor = nodeData.color;
+                node.width = nodeData.width;
+                node.height = nodeData.height;
+                node.color = nodeData.color;
+                node.confidence = nodeData.confidence;
+                
+                // Set confidence display
+                const confidenceFill = node.element.querySelector('.confidence-fill');
+                confidenceFill.style.width = `${nodeData.confidence}%`;
+            });
+            
+            // Restore connections
+            data.connections.forEach(connData => {
+                createConnection(connData.from, connData.to, connData.label);
+            });
+            
+            // Restore settings
+            state.zoomLevel = data.zoomLevel || 1;
+            state.darkMode = data.darkMode || false;
+            state.gridVisible = data.gridVisible !== undefined ? data.gridVisible : true;
+            
+            dom.canvas.style.transform = `scale(${state.zoomLevel})`;
+            document.body.classList.toggle('dark-mode', state.darkMode);
+            dom.darkModeToggle.textContent = state.darkMode ? '☀️' : '🌙';
+            dom.gridOverlay.style.display = state.gridVisible ? 'block' : 'none';
+            
+            // Update UI
+            updateUI();
+        }
+
+        // Clear canvas
+        function clearCanvas() {
+            if (confirm('Are you sure you want to clear the entire mind map? This cannot be undone.')) {
+                state.nodes.forEach(node => node.element.remove());
+                state.connections.forEach(conn => {
+                    if (conn.element) conn.element.remove();
+                    if (conn.labelElement) conn.labelElement.remove();
+                });
+                
+                state.nodes = [];
+                state.connections = [];
+                state.currentNodeId = 1;
+                state.currentConnectionId = 1;
+                
+                localStorage.removeItem('mindmapr-state');
+            }
+        }
+
+        // Export as PNG
+        function exportAsPNG() {
+            html2canvas(dom.canvasContainer).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'mindmapr-export.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
+        // Export as JSON
+        function exportAsJSON() {
+            // Update node content from DOM
+            state.nodes.forEach(node => {
+                node.title = node.element.querySelector('.node-title').textContent;
+                node.content = node.element.querySelector('.node-content').textContent;
+                node.confidence = node.element.querySelector('.confidence-fill').style.width.replace('%', '');
+            });
+            
+            const data = {
+                nodes: state.nodes.map(node => ({
+                    id: node.id,
+                    x: node.x,
+                    y: node.y,
+                    width: node.width,
+                    height: node.height,
+                    title: node.title,
+                    content: node.content,
+                    color: node.color,
+                    confidence: node.confidence
+                })),
+                connections: state.connections.map(conn => ({
+                    from: conn.from,
+                    to: conn.to,
+                    label: conn.label
+                }))
+            };
+            
+            const jsonStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonStr], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.download = 'mindmapr-export.json';
+            link.href = url;
+            link.click();
+            
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+        }
+
+        // Export as Text
+        function exportAsText() {
+            // Update node content from DOM
+            state.nodes.forEach(node => {
+                node.title = node.element.querySelector('.node-title').textContent;
+                node.content = node.element.querySelector('.node-content').textContent;
+            });
+            
+            let textContent = 'MindMapr Export\n================\n\n';
+            
+            // Add nodes
+            textContent += 'Nodes:\n';
+            state.nodes.forEach(node => {
+                textContent += `- ${node.title}: ${node.content}\n`;
+            });
+            
+            // Add connections
+            textContent += '\nConnections:\n';
+            state.connections.forEach(conn => {
+                const fromNode = state.nodes.find(n => n.id === conn.from);
+                const toNode = state.nodes.find(n => n.id === conn.to);
+                
+                if (fromNode && toNode) {
+                    textContent += `- ${fromNode.title} ${conn.label || '-->'} ${toNode.title}\n`;
+                }
+            });
+            
+            const blob = new Blob([textContent], {type: 'text/plain'});
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.download = 'mindmapr-export.txt';
+            link.href = url;
+            link.click();
+            
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+        }
+
+        // Start auto-save every 30 seconds
+        function startAutoSave() {
+            setInterval(() => {
+                if (state.nodes.length > 0) {
+                    saveState();
+                }
+            }, 30000);
+        }
+
+        // Update UI based on state
+        function updateUI() {
+            // Nothing needed here for now, but available for future UI updates
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
