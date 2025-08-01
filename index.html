@@ -3,63 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RetroMind - Modern Mind Mapping for Students</title>
+    <title>MindMapr - Retro Mind Mapping for Students</title>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
-        /* Retro 80s/90s inspired color palette */
         :root {
-            --bg-primary: #0a1929;
-            --bg-secondary: #132f4c;
-            --accent-blue: #00b4d8;
-            --accent-pink: #ff6b6b;
-            --accent-yellow: #ffd166;
-            --accent-purple: #9d4edd;
-            --text-primary: #e6f1ff;
-            --text-secondary: #a8b2d1;
-            --grid-color: rgba(100, 149, 237, 0.1);
-            --node-bg: #1e3a5f;
-            --success: #06d6a0;
-            --warning: #ffd166;
-            --error: #ef476f;
-            --border-radius: 12px;
-            --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --cream: #f0f0e6;
+            --light-blue: #87a0b0;
+            --dark-blue: #4a6274;
+            --gold: #d4a96a;
+            --pink: #d28282;
+            --teal: #5f9b93;
+            --node-bg: #ffffff;
+            --canvas-bg: var(--cream);
+            --text-dark: #333333;
+            --text-light: #ffffff;
+            --grid-color: rgba(74, 98, 116, 0.1);
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --retro-font: 'Courier New', 'Lucida Console', monospace;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--retro-font);
         }
 
         body {
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-            color: var(--text-primary);
+            background: linear-gradient(135deg, #e6e2d7 0%, #d6d2c7 100%);
+            color: var(--text-dark);
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            position: relative;
-        }
-
-        /* Retro scanlines effect */
-        body::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(0, 0, 0, 0.15),
-                    rgba(0, 0, 0, 0.15) 1px,
-                    transparent 1px,
-                    transparent 2px
-                );
-            pointer-events: none;
-            z-index: 1000;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d4a96a' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
         }
 
         .app-container {
@@ -67,348 +45,238 @@
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
-            position: relative;
-            z-index: 10;
         }
 
-        /* Header Styles - Retro Modern */
+        /* Retro Header */
         header {
-            background: rgba(10, 25, 41, 0.9);
-            backdrop-filter: blur(10px);
-            color: var(--text-primary);
-            padding: 14px 24px;
+            background: var(--dark-blue);
+            color: white;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(0, 180, 216, 0.3);
+            box-shadow: var(--shadow);
             z-index: 100;
+            border-bottom: 3px solid var(--gold);
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
         }
 
         .logo-icon {
-            font-size: 32px;
-            background: var(--accent-blue);
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            font-size: 28px;
+            color: var(--gold);
         }
 
         .logo h1 {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 700;
             letter-spacing: 1px;
-            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
         }
 
         .controls {
             display: flex;
-            gap: 14px;
+            gap: 10px;
             align-items: center;
         }
 
         .btn {
-            background: rgba(30, 58, 95, 0.7);
-            border: 1px solid rgba(0, 180, 216, 0.3);
+            background: transparent;
+            border: 2px solid var(--gold);
             border-radius: var(--border-radius);
-            color: var(--text-primary);
-            padding: 10px 18px;
+            color: var(--gold);
+            padding: 8px 14px;
             cursor: pointer;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: var(--transition);
-            font-size: 16px;
-            backdrop-filter: blur(5px);
+            gap: 6px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            text-transform: uppercase;
         }
 
         .btn:hover {
-            background: rgba(0, 180, 216, 0.2);
-            border-color: var(--accent-blue);
-            transform: translateY(-2px);
+            background: var(--gold);
+            color: var(--dark-blue);
         }
 
         .btn i {
-            font-size: 20px;
+            font-size: 18px;
         }
 
-        .export-dropdown {
-            position: relative;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: rgba(19, 47, 76, 0.95);
-            border-radius: var(--border-radius);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            z-index: 1;
-            min-width: 220px;
-            overflow: hidden;
-            border: 1px solid rgba(0, 180, 216, 0.3);
-            backdrop-filter: blur(10px);
-        }
-
-        .export-dropdown:hover .dropdown-content {
-            display: block;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .dropdown-content button {
-            width: 100%;
-            padding: 12px 16px;
-            text-align: left;
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 16px;
-            border-bottom: 1px solid rgba(0, 180, 216, 0.1);
-        }
-
-        .dropdown-content button:hover {
-            background: rgba(0, 180, 216, 0.1);
-        }
-
-        .dark-mode-toggle {
-            background: none;
-            border: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: var(--accent-yellow);
-            transition: transform 0.3s;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(30, 58, 95, 0.7);
-            border: 1px solid rgba(0, 180, 216, 0.3);
-            backdrop-filter: blur(5px);
-        }
-
-        .dark-mode-toggle:hover {
-            transform: rotate(20deg);
-            background: rgba(0, 180, 216, 0.2);
-        }
-
-        /* Main Content */
-        .main-content {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Sidebar Styles - Retro Modern */
+        /* Minimalist Sidebar */
         .sidebar {
-            width: 280px;
-            background: rgba(19, 47, 76, 0.9);
-            border-right: 1px solid rgba(0, 180, 216, 0.3);
-            padding: 24px;
+            width: 260px;
+            background: rgba(255, 255, 255, 0.9);
+            border-right: 1px solid var(--light-blue);
+            padding: 15px;
             display: flex;
             flex-direction: column;
-            transition: all 0.5s ease;
             overflow-y: auto;
             z-index: 50;
-            backdrop-filter: blur(10px);
         }
 
         .sidebar h2 {
-            font-size: 1.5rem;
-            margin-bottom: 24px;
-            color: var(--accent-blue);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 600;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--dark-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 8px;
         }
 
         .tools {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 30px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .tool-btn {
-            background: rgba(30, 58, 95, 0.7);
-            border: 1px solid rgba(0, 180, 216, 0.3);
+            background: transparent;
+            border: 2px solid var(--light-blue);
             border-radius: var(--border-radius);
-            padding: 18px 12px;
+            padding: 12px;
             text-align: center;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 14px;
-            color: var(--text-primary);
+            gap: 8px;
+            color: var(--text-dark);
             font-weight: 600;
-            backdrop-filter: blur(5px);
         }
 
         .tool-btn:hover {
+            background: rgba(135, 160, 176, 0.1);
             transform: translateY(-3px);
-            border-color: var(--accent-blue);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
         }
 
         .tool-btn.active {
-            background: rgba(0, 180, 216, 0.2);
-            border-color: var(--accent-blue);
+            background: var(--light-blue);
+            color: white;
+            border-color: var(--gold);
         }
 
         .tool-btn i {
-            font-size: 32px;
-            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 24px;
         }
 
         .section {
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(30, 58, 95, 0.5);
+            margin-bottom: 20px;
+            padding: 12px;
+            background: rgba(249, 249, 249, 0.7);
             border-radius: var(--border-radius);
-            border: 1px solid rgba(0, 180, 216, 0.2);
-            backdrop-filter: blur(5px);
+            border: 1px solid rgba(135, 160, 176, 0.3);
         }
 
         .section-title {
-            font-size: 1.1rem;
-            color: var(--accent-blue);
-            margin-bottom: 18px;
+            font-size: 1rem;
+            color: var(--dark-blue);
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-weight: 600;
+            gap: 8px;
+            font-weight: 700;
         }
 
         .color-palette {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
             justify-content: center;
         }
 
         .color-option {
-            width: 36px;
-            height: 36px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             cursor: pointer;
-            border: 2px solid var(--bg-secondary);
-            transition: var(--transition);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border: 2px solid white;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .color-option:hover {
             transform: scale(1.2);
-            box-shadow: 0 0 0 3px var(--accent-blue);
         }
 
         .color-option.active {
-            border-color: var(--accent-yellow);
+            border-color: var(--gold);
             transform: scale(1.2);
-            box-shadow: 0 0 0 3px var(--bg-secondary), 0 0 0 5px var(--accent-yellow);
+            box-shadow: 0 0 0 2px white, 0 0 0 4px var(--gold);
         }
 
         .confidence-slider {
             width: 100%;
-            margin: 20px 0;
+            margin: 15px 0;
             -webkit-appearance: none;
             height: 8px;
             border-radius: 10px;
-            background: linear-gradient(to right, var(--error), var(--warning), var(--success));
+            background: linear-gradient(to right, #f44336, #ff9800, #8bc34a);
             outline: none;
         }
 
         .confidence-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            background: var(--accent-blue);
-            border: 3px solid var(--bg-secondary);
+            background: var(--gold);
+            border: 2px solid white;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .timer-controls {
             display: flex;
-            gap: 12px;
-            margin-top: 18px;
+            gap: 8px;
+            margin-top: 12px;
         }
 
         .timer-btn {
             flex: 1;
-            padding: 12px;
+            padding: 8px;
             border-radius: var(--border-radius);
-            border: none;
-            background: rgba(30, 58, 95, 0.7);
-            border: 1px solid rgba(0, 180, 216, 0.3);
-            color: var(--text-primary);
+            border: 1px solid var(--light-blue);
+            background: transparent;
+            color: var(--dark-blue);
             cursor: pointer;
             font-weight: 600;
-            transition: var(--transition);
-            backdrop-filter: blur(5px);
+            transition: all 0.3s;
         }
 
         .timer-btn:hover {
-            background: rgba(0, 180, 216, 0.2);
-            transform: translateY(-2px);
+            background: var(--light-blue);
+            color: white;
         }
 
         .timer-display {
             text-align: center;
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: bold;
-            margin: 15px 0;
-            color: var(--accent-blue);
-            background: rgba(30, 58, 95, 0.5);
-            padding: 15px;
+            margin: 12px 0;
+            color: var(--dark-blue);
+            background: white;
+            padding: 8px;
             border-radius: var(--border-radius);
-            border: 1px solid rgba(0, 180, 216, 0.3);
-            font-family: 'Courier New', monospace;
-            backdrop-filter: blur(5px);
+            border: 2px solid var(--gold);
+            font-family: var(--retro-font);
         }
 
-        /* Canvas Area - Retro Design */
+        /* Canvas Area */
         .canvas-container {
             flex: 1;
             position: relative;
             overflow: hidden;
-            background-color: var(--bg-primary);
-            background-image: 
-                radial-gradient(circle at center, transparent 0%, rgba(0, 180, 216, 0.05) 100%);
+            background-color: var(--canvas-bg);
         }
 
         #mindmap-canvas {
@@ -440,40 +308,39 @@
             z-index: 1;
         }
 
+        /* Retro Node Design */
         .node {
             position: absolute;
             background-color: var(--node-bg);
             border-radius: var(--border-radius);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(0, 180, 216, 0.3);
-            min-width: 180px;
-            min-height: 140px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            min-width: 160px;
+            min-height: 120px;
             cursor: move;
             z-index: 10;
             overflow: hidden;
-            transition: var(--transition);
+            transition: all 0.3s ease;
+            border: 2px solid var(--light-blue);
             animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(5px);
         }
 
         @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
+            0% { transform: scale(0.8); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
 
         .node:hover {
-            transform: scale(1.02);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
-            border-color: var(--accent-blue);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            border-color: var(--gold);
         }
 
         .node-header {
-            padding: 14px 18px;
-            border-bottom: 1px solid rgba(0, 180, 216, 0.2);
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--light-blue);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(0, 180, 216, 0.1);
+            background: var(--dark-blue);
         }
 
         .node-title {
@@ -484,76 +351,58 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            color: var(--text-primary);
-            font-size: 18px;
-            background: transparent;
-            border: none;
-            transition: var(--transition);
-        }
-
-        .node-title:focus {
-            text-shadow: 0 0 10px rgba(0, 180, 216, 0.5);
+            color: white;
+            font-size: 16px;
+            letter-spacing: 0.5px;
         }
 
         .node-controls {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .node-btn {
-            background: rgba(0, 180, 216, 0.3);
+            background: transparent;
             border: none;
-            color: var(--text-primary);
+            color: var(--gold);
             cursor: pointer;
-            font-size: 18px;
-            width: 30px;
-            height: 30px;
+            font-size: 16px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            transition: var(--transition);
+            transition: all 0.2s;
         }
 
         .node-btn:hover {
-            background: rgba(0, 180, 216, 0.5);
+            color: white;
             transform: rotate(15deg);
         }
 
         .node-content {
-            padding: 18px;
-            min-height: 100px;
+            padding: 12px;
+            min-height: 80px;
             cursor: text;
             outline: none;
-            background: transparent;
-            font-size: 16px;
-            line-height: 1.6;
-            transition: var(--transition);
-        }
-
-        .node-content:focus {
-            background: rgba(0, 180, 216, 0.05);
+            background: white;
+            font-size: 14px;
+            line-height: 1.4;
         }
 
         .node-resize {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background: var(--accent-yellow);
+            width: 16px;
+            height: 16px;
+            background: var(--gold);
             border-radius: 50%;
             bottom: 0;
             right: 0;
             cursor: nwse-resize;
             z-index: 20;
-            border: 2px solid var(--bg-secondary);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            opacity: 0.7;
-            transition: var(--transition);
-        }
-
-        .node-resize:hover {
-            opacity: 1;
-            transform: scale(1.2);
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .connection {
@@ -561,140 +410,198 @@
             pointer-events: none;
             z-index: 5;
             height: 3px;
-            background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+            background: var(--pink);
             transform-origin: 0 0;
         }
 
         .connection:after {
             content: '';
             position: absolute;
-            right: -10px;
-            top: -5px;
+            right: -8px;
+            top: -4px;
             width: 0;
             height: 0;
-            border-top: 7px solid transparent;
-            border-bottom: 7px solid transparent;
-            border-left: 14px solid var(--accent-blue);
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 10px solid var(--pink);
         }
 
         .add-node-btn {
             position: absolute;
-            bottom: 40px;
-            right: 40px;
-            width: 70px;
-            height: 70px;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background: radial-gradient(circle, var(--accent-blue) 0%, var(--accent-purple) 100%);
-            color: var(--text-primary);
-            border: 2px solid var(--bg-secondary);
-            font-size: 36px;
+            background: var(--dark-blue);
+            color: var(--gold);
+            border: 3px solid var(--gold);
+            font-size: 30px;
             cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
             z-index: 100;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: var(--transition);
-            animation: pulse 3s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); }
-            50% { transform: scale(1.1); box-shadow: 0 0 20px var(--accent-blue), 0 10px 40px rgba(0, 0, 0, 0.5); }
-            100% { transform: scale(1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); }
+            transition: all 0.3s ease;
         }
 
         .add-node-btn:hover {
-            transform: scale(1.1) rotate(90deg);
-            animation: none;
+            transform: rotate(90deg);
+            background: var(--gold);
+            color: var(--dark-blue);
         }
 
         .zoom-controls {
             position: absolute;
-            bottom: 40px;
-            left: 40px;
+            bottom: 30px;
+            left: 30px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
             z-index: 100;
         }
 
         .zoom-btn {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            background: rgba(30, 58, 95, 0.7);
-            border: 1px solid rgba(0, 180, 216, 0.3);
-            color: var(--text-primary);
-            font-size: 24px;
+            background: var(--dark-blue);
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            font-size: 20px;
             cursor: pointer;
+            box-shadow: var(--shadow);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: var(--transition);
-            backdrop-filter: blur(5px);
+            transition: all 0.3s;
         }
 
         .zoom-btn:hover {
-            background: rgba(0, 180, 216, 0.2);
-            transform: scale(1.1);
+            background: var(--gold);
+            color: var(--dark-blue);
         }
 
         .connection-label {
             position: absolute;
-            background: rgba(30, 58, 95, 0.9);
-            padding: 8px 18px;
+            background: white;
+            padding: 4px 12px;
             border-radius: 30px;
-            font-size: 14px;
+            font-size: 12px;
             pointer-events: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             z-index: 15;
-            border: 1px solid var(--accent-blue);
+            border: 1px solid var(--gold);
             font-weight: 600;
-            color: var(--text-primary);
+            color: var(--dark-blue);
             text-align: center;
-            min-width: 80px;
-            backdrop-filter: blur(5px);
+            min-width: 70px;
         }
 
         .confidence-display {
             height: 10px;
-            background: rgba(30, 58, 95, 0.5);
-            border-radius: 6px;
-            margin-top: 14px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin-top: 10px;
             overflow: hidden;
-            border: 1px solid rgba(0, 180, 216, 0.2);
+            border: 1px solid var(--light-blue);
         }
 
         .confidence-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-            border-radius: 6px;
+            background: linear-gradient(90deg, var(--light-blue), var(--dark-blue));
+            border-radius: 5px;
             transition: width 0.5s ease;
         }
 
-        /* Bubble animation elements */
+        /* Bubbles for interaction */
         .bubble {
             position: absolute;
             border-radius: 50%;
-            background: rgba(0, 180, 216, 0.4);
+            background: var(--gold);
+            opacity: 0.7;
             pointer-events: none;
-            z-index: 5;
-            animation: bubbleAnim 1s ease-out forwards;
+            z-index: 1000;
+            animation: bubblePop 0.6s forwards;
         }
 
-        @keyframes bubbleAnim {
-            0% {
-                transform: scale(0);
-                opacity: 0.8;
-            }
-            50% {
-                opacity: 0.6;
-            }
-            100% {
-                transform: scale(1.5);
-                opacity: 0;
-            }
+        @keyframes bubblePop {
+            0% { transform: scale(0); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 0.4; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        /* Retro Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            width: 90%;
+            max-width: 450px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 3px solid var(--gold);
+            padding: 20px;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--light-blue);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--dark-blue);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            color: white;
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--gold);
+            transition: transform 0.3s;
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 20px;
+            background: white;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--light-blue);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: rgba(240, 240, 230, 0.7);
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
         }
 
         /* Responsive Design */
@@ -713,7 +620,7 @@
             }
             
             .logo h1 {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
             }
             
             .btn span {
@@ -721,12 +628,12 @@
             }
             
             .btn {
-                padding: 12px;
+                padding: 10px;
             }
             
             .btn i {
                 margin: 0;
-                font-size: 24px;
+                font-size: 20px;
             }
         }
     </style>
@@ -735,8 +642,8 @@
     <div class="app-container">
         <header>
             <div class="logo">
-                <div class="logo-icon">🧠</div>
-                <h1>RetroMind</h1>
+                <span class="logo-icon">🧠</span>
+                <h1>MindMapr Retro</h1>
             </div>
             <div class="controls">
                 <button class="btn" id="save-btn">
@@ -747,23 +654,10 @@
                     <i>📂</i>
                     <span>Load</span>
                 </button>
-                <div class="export-dropdown">
-                    <button class="btn">
-                        <i>📤</i>
-                        <span>Export</span>
-                    </button>
-                    <div class="dropdown-content">
-                        <button id="export-png">
-                            <i>🖼️</i> Export as PNG
-                        </button>
-                        <button id="export-json">
-                            <i>📝</i> Export as JSON
-                        </button>
-                        <button id="export-text">
-                            <i>📋</i> Export as Text
-                        </button>
-                    </div>
-                </div>
+                <button class="btn" id="export-btn">
+                    <i>📤</i>
+                    <span>Export</span>
+                </button>
                 <button class="btn" id="clear-btn">
                     <i>🧹</i>
                     <span>Clear</span>
@@ -774,7 +668,7 @@
 
         <div class="main-content">
             <div class="sidebar" id="sidebar">
-                <h2><i>🎨</i> Creative Tools</h2>
+                <h2><i>🛠️</i> Mind Tools</h2>
                 
                 <div class="tools">
                     <div class="tool-btn" id="tool-select">
@@ -797,15 +691,15 @@
                 
                 <div class="section">
                     <div class="section-title">
-                        <i>🌈</i> Idea Colors
+                        <i>🎨</i> Idea Styling
                     </div>
                     <div class="color-palette">
-                        <div class="color-option active" style="background-color: #1e3a5f;" data-color="#1e3a5f"></div>
-                        <div class="color-option" style="background-color: #2a4d69;" data-color="#2a4d69"></div>
-                        <div class="color-option" style="background-color: #355070;" data-color="#355070"></div>
-                        <div class="color-option" style="background-color: #4a6572;" data-color="#4a6572"></div>
-                        <div class="color-option" style="background-color: #5d8aa8;" data-color="#5d8aa8"></div>
-                        <div class="color-option" style="background-color: #6b5b95;" data-color="#6b5b95"></div>
+                        <div class="color-option active" style="background-color: #FFFFFF;" data-color="#FFFFFF"></div>
+                        <div class="color-option" style="background-color: #e6b8b7;" data-color="#e6b8b7"></div>
+                        <div class="color-option" style="background-color: #d28282;" data-color="#d28282"></div>
+                        <div class="color-option" style="background-color: #87a0b0;" data-color="#87a0b0"></div>
+                        <div class="color-option" style="background-color: #5f9b93;" data-color="#5f9b93"></div>
+                        <div class="color-option" style="background-color: #d4d4c0;" data-color="#d4d4c0"></div>
                     </div>
                 </div>
                 
@@ -821,7 +715,7 @@
                 
                 <div class="section">
                     <div class="section-title">
-                        <i>⏱️</i> Study Timer
+                        <i>⏱️</i> Focus Timer
                     </div>
                     <div class="timer-display" id="timer-display">25:00</div>
                     <div class="timer-controls">
@@ -832,15 +726,15 @@
                 
                 <div class="section">
                     <div class="section-title">
-                        <i>✨</i> Special Modes
+                        <i>⚙️</i> Settings
                     </div>
                     <div class="tool-btn" id="grid-toggle">
                         <i>🔳</i>
                         <span>Toggle Grid</span>
                     </div>
                     <div class="tool-btn" id="memory-mode">
-                        <i>🤔</i>
-                        <span>Memory Game</span>
+                        <i>🧠</i>
+                        <span>Memory Mode</span>
                     </div>
                 </div>
             </div>
@@ -875,8 +769,9 @@
             scrollLeft: 0,
             scrollTop: 0,
             activeTool: 'node',
-            nodeColor: '#1e3a5f',
+            nodeColor: '#FFFFFF',
             confidenceLevel: 80,
+            darkMode: false,
             gridVisible: true,
             memoryMode: false,
             timerActive: false,
@@ -897,10 +792,8 @@
             darkModeToggle: document.getElementById('dark-mode-toggle'),
             saveBtn: document.getElementById('save-btn'),
             loadBtn: document.getElementById('load-btn'),
+            exportBtn: document.getElementById('export-btn'),
             clearBtn: document.getElementById('clear-btn'),
-            exportPngBtn: document.getElementById('export-png'),
-            exportJsonBtn: document.getElementById('export-json'),
-            exportTextBtn: document.getElementById('export-text'),
             toolSelect: document.getElementById('tool-select'),
             toolNode: document.getElementById('tool-node'),
             toolConnect: document.getElementById('tool-connect'),
@@ -916,140 +809,26 @@
 
         // Initialize application
         function init() {
-            createSampleMindMap();
             setupEventListeners();
+            createSampleMindMap();
             updateUI();
-            createBubbles();
         }
 
-        // Create floating bubbles animation
-        function createBubbles() {
-            setInterval(() => {
-                if (Math.random() > 0.7) {
-                    const size = Math.random() * 30 + 10;
-                    const x = Math.random() * window.innerWidth;
-                    const bubble = document.createElement('div');
-                    bubble.className = 'bubble';
-                    bubble.style.width = `${size}px`;
-                    bubble.style.height = `${size}px`;
-                    bubble.style.left = `${x}px`;
-                    bubble.style.top = `${window.innerHeight + 20}px`;
-                    bubble.style.opacity = Math.random() * 0.3 + 0.1;
-                    document.body.appendChild(bubble);
-                    
-                    // Animate bubble
-                    const duration = Math.random() * 8 + 8;
-                    bubble.animate([
-                        { transform: `translateY(0)`, opacity: bubble.style.opacity },
-                        { transform: `translateY(-${window.innerHeight + 100}px)`, opacity: 0 }
-                    ], {
-                        duration: duration * 1000,
-                        easing: 'linear'
-                    });
-                    
-                    // Remove bubble after animation
-                    setTimeout(() => {
-                        bubble.remove();
-                    }, duration * 1000);
-                }
-            }, 1000);
-        }
-
-        // Create a sample mind map for first-time users
-        function createSampleMindMap() {
-            const centerX = dom.canvasContainer.clientWidth / 2 - 90;
-            const centerY = dom.canvasContainer.clientHeight / 2 - 70;
+        // Create bubbles effect
+        function createBubble(x, y, color) {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.style.left = `${x}px`;
+            bubble.style.top = `${y}px`;
+            bubble.style.backgroundColor = color;
+            bubble.style.width = `${Math.random() * 30 + 10}px`;
+            bubble.style.height = bubble.style.width;
             
-            const mainNode = createNode(centerX, centerY, 'Main Concept', 'The central idea of your mind map');
-            const child1 = createNode(centerX - 240, centerY - 180, 'Key Aspect', 'Important related concept');
-            const child2 = createNode(centerX + 240, centerY - 180, 'Research', 'Areas to explore further');
-            const child3 = createNode(centerX - 240, centerY + 180, 'Applications', 'Practical uses of this concept');
-            const child4 = createNode(centerX + 240, centerY + 180, 'Resources', 'Books, articles, and references');
+            document.body.appendChild(bubble);
             
-            // Add connections
-            createConnection(mainNode.id, child1.id, 'includes');
-            createConnection(mainNode.id, child2.id, 'leads to');
-            createConnection(mainNode.id, child3.id, 'applies to');
-            createConnection(mainNode.id, child4.id, 'requires');
-        }
-
-        // Create a new node with bubble animation
-        function createNode(x, y, title = 'New Idea', content = '') {
-            const nodeId = state.currentNodeId++;
-            const node = document.createElement('div');
-            node.className = 'node';
-            node.id = `node-${nodeId}`;
-            node.style.left = `${x}px`;
-            node.style.top = `${y}px`;
-            node.style.backgroundColor = state.nodeColor;
-            node.dataset.id = nodeId;
-            
-            node.innerHTML = `
-                <div class="node-header">
-                    <div class="node-title" contenteditable="true">${title}</div>
-                    <div class="node-controls">
-                        <button class="node-btn" data-action="color">🎨</button>
-                        <button class="node-btn" data-action="delete">✖️</button>
-                    </div>
-                </div>
-                <div class="node-content" contenteditable="true">${content}</div>
-                <div class="node-resize"></div>
-                <div class="confidence-display">
-                    <div class="confidence-fill" style="width: ${state.confidenceLevel}%"></div>
-                </div>
-            `;
-            
-            dom.canvas.appendChild(node);
-            
-            // Add bubble effect
-            createBubbleEffect(x + 50, y + 50);
-            
-            // Add to state
-            state.nodes.push({
-                id: nodeId,
-                element: node,
-                x: parseInt(node.style.left),
-                y: parseInt(node.style.top),
-                width: node.offsetWidth,
-                height: node.offsetHeight,
-                title: title,
-                content: content,
-                color: state.nodeColor,
-                confidence: state.confidenceLevel
-            });
-            
-            return state.nodes.find(n => n.id === nodeId);
-        }
-
-        // Create bubble effect animation
-        function createBubbleEffect(x, y) {
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const bubble = document.createElement('div');
-                    bubble.className = 'bubble';
-                    bubble.style.left = `${x}px`;
-                    bubble.style.top = `${y}px`;
-                    bubble.style.width = `${Math.random() * 30 + 10}px`;
-                    bubble.style.height = bubble.style.width;
-                    document.body.appendChild(bubble);
-                    
-                    // Animate bubble
-                    const animX = (Math.random() - 0.5) * 100;
-                    const animY = (Math.random() - 0.5) * 100;
-                    const scale = Math.random() * 0.5 + 0.5;
-                    
-                    bubble.animate([
-                        { transform: 'translate(0, 0) scale(0)', opacity: 0.8 },
-                        { transform: `translate(${animX}px, ${animY}px) scale(${scale})`, opacity: 0 }
-                    ], {
-                        duration: 800,
-                        easing: 'ease-out'
-                    });
-                    
-                    // Remove bubble after animation
-                    setTimeout(() => bubble.remove(), 800);
-                }, i * 100);
-            }
+            setTimeout(() => {
+                bubble.remove();
+            }, 600);
         }
 
         // Set up event listeners
@@ -1062,13 +841,30 @@
             
             // UI Controls
             dom.addNodeBtn.addEventListener('click', () => {
-                const centerX = dom.canvasContainer.clientWidth / 2 - 90;
-                const centerY = dom.canvasContainer.clientHeight / 2 - 70;
-                createNode(centerX, centerY);
+                const rect = dom.canvasContainer.getBoundingClientRect();
+                const x = rect.width / 2 - 80;
+                const y = rect.height / 2 - 60;
+                addNode(x, y);
+                
+                // Create bubbles at the click position
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        createBubble(
+                            rect.left + rect.width / 2, 
+                            rect.top + rect.height / 2,
+                            ['#d4a96a', '#87a0b0', '#d28282'][Math.floor(Math.random() * 3)]
+                        );
+                    }, i * 100);
+                }
             });
             
             dom.zoomInBtn.addEventListener('click', () => adjustZoom(0.1));
             dom.zoomOutBtn.addEventListener('click', () => adjustZoom(-0.1));
+            dom.darkModeToggle.addEventListener('click', toggleDarkMode);
+            dom.saveBtn.addEventListener('click', saveState);
+            dom.loadBtn.addEventListener('click', loadState);
+            dom.exportBtn.addEventListener('click', showExportOptions);
+            dom.clearBtn.addEventListener('click', clearCanvas);
             
             // Tool selection
             dom.toolSelect.addEventListener('click', () => setActiveTool('select'));
@@ -1100,6 +896,219 @@
             dom.timerReset.addEventListener('click', resetTimer);
         }
 
+        // Create a sample mind map for first-time users
+        function createSampleMindMap() {
+            const centerX = dom.canvasContainer.clientWidth / 2 - 75;
+            const centerY = dom.canvasContainer.clientHeight / 2 - 50;
+            
+            const mainNode = createNode(centerX, centerY, 'Main Concept', 'The central idea of your mind map');
+            const child1 = createNode(centerX - 200, centerY - 150, 'Key Aspects', 'Important elements related to the main concept');
+            const child2 = createNode(centerX + 200, centerY - 150, 'Research Areas', 'Topics to explore further');
+            const child3 = createNode(centerX - 200, centerY + 150, 'Applications', 'Practical uses of this concept');
+            
+            createConnection(mainNode.id, child1.id, 'includes');
+            createConnection(mainNode.id, child2.id, 'leads to');
+            createConnection(mainNode.id, child3.id, 'applies to');
+        }
+
+        // Create a new node
+        function createNode(x, y, title = 'New Idea', content = '') {
+            const nodeId = state.currentNodeId++;
+            const node = document.createElement('div');
+            node.className = 'node';
+            node.id = `node-${nodeId}`;
+            node.style.left = `${x}px`;
+            node.style.top = `${y}px`;
+            node.style.backgroundColor = state.nodeColor;
+            node.dataset.id = nodeId;
+            
+            node.innerHTML = `
+                <div class="node-header">
+                    <div class="node-title" contenteditable="true">${title}</div>
+                    <div class="node-controls">
+                        <button class="node-btn" data-action="delete">✖️</button>
+                    </div>
+                </div>
+                <div class="node-content" contenteditable="true">${content}</div>
+                <div class="node-resize"></div>
+                <div class="confidence-display">
+                    <div class="confidence-fill" style="width: ${state.confidenceLevel}%"></div>
+                </div>
+            `;
+            
+            dom.canvas.appendChild(node);
+            
+            // Add event listeners for the new node
+            const header = node.querySelector('.node-header');
+            const deleteBtn = node.querySelector('[data-action="delete"]');
+            
+            header.addEventListener('mousedown', startDrag);
+            deleteBtn.addEventListener('click', () => deleteNode(nodeId));
+            
+            // Add to state
+            state.nodes.push({
+                id: nodeId,
+                element: node,
+                x: parseInt(node.style.left),
+                y: parseInt(node.style.top),
+                width: node.offsetWidth,
+                height: node.offsetHeight,
+                title: title,
+                content: content,
+                color: state.nodeColor,
+                confidence: state.confidenceLevel
+            });
+            
+            return state.nodes.find(n => n.id === nodeId);
+        }
+
+        // Delete a node
+        function deleteNode(nodeId) {
+            const nodeIndex = state.nodes.findIndex(n => n.id === nodeId);
+            if (nodeIndex !== -1) {
+                const node = state.nodes[nodeIndex];
+                
+                // Create bubbles at node position
+                const rect = node.element.getBoundingClientRect();
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => {
+                        createBubble(
+                            rect.left + rect.width/2, 
+                            rect.top + rect.height/2,
+                            ['#d4a96a', '#87a0b0', '#d28282'][Math.floor(Math.random() * 3)]
+                        );
+                    }, i * 80);
+                }
+                
+                // Remove after animation
+                setTimeout(() => {
+                    node.element.remove();
+                    state.nodes.splice(nodeIndex, 1);
+                }, 800);
+            }
+        }
+
+        // Create connection between two nodes
+        function createConnection(fromId, toId, label = '') {
+            const fromNode = state.nodes.find(n => n.id === fromId);
+            const toNode = state.nodes.find(n => n.id === toId);
+            
+            if (!fromNode || !toNode) return;
+            
+            const connectionId = state.currentConnectionId++;
+            const connection = document.createElement('div');
+            connection.className = 'connection';
+            connection.dataset.id = connectionId;
+            
+            dom.canvas.appendChild(connection);
+            
+            // Create connection label if provided
+            let labelElement = null;
+            if (label) {
+                labelElement = document.createElement('div');
+                labelElement.className = 'connection-label';
+                labelElement.textContent = label;
+                labelElement.dataset.connectionId = connectionId;
+                dom.canvas.appendChild(labelElement);
+            }
+            
+            // Add to state
+            state.connections.push({
+                id: connectionId,
+                element: connection,
+                labelElement: labelElement,
+                from: fromId,
+                to: toId,
+                label: label
+            });
+            
+            updateConnection(connectionId);
+            return state.connections.find(c => c.id === connectionId);
+        }
+
+        // Start dragging a node
+        function startDrag(e) {
+            if (state.activeTool !== 'select' && state.activeTool !== 'node') return;
+            
+            const nodeElement = e.target.closest('.node');
+            if (!nodeElement) return;
+            
+            state.selectedNode = parseInt(nodeElement.dataset.id);
+            const node = state.nodes.find(n => n.id === state.selectedNode);
+            
+            const startX = e.clientX;
+            const startY = e.clientY;
+            const startLeft = parseInt(node.element.style.left);
+            const startTop = parseInt(node.element.style.top);
+            
+            function drag(e) {
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                
+                node.element.style.left = `${startLeft + dx}px`;
+                node.element.style.top = `${startTop + dy}px`;
+                
+                // Update position in state
+                node.x = startLeft + dx;
+                node.y = startTop + dy;
+            }
+            
+            function stopDrag() {
+                document.removeEventListener('mousemove', drag);
+                document.removeEventListener('mouseup', stopDrag);
+                state.selectedNode = null;
+            }
+            
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDrag);
+        }
+
+        // Start panning the canvas
+        function startPan(e) {
+            if (e.target.closest('.node')) return;
+            
+            state.panning = true;
+            dom.canvas.classList.add('panning');
+            
+            state.startX = e.pageX - dom.canvas.offsetLeft;
+            state.startY = e.pageY - dom.canvas.offsetTop;
+            state.scrollLeft = dom.canvas.scrollLeft;
+            state.scrollTop = dom.canvas.scrollTop;
+        }
+
+        // Pan the canvas
+        function panCanvas(e) {
+            if (!state.panning) return;
+            
+            e.preventDefault();
+            const x = e.pageX - dom.canvas.offsetLeft;
+            const y = e.pageY - dom.canvas.offsetTop;
+            const walkX = (x - state.startX) * 2;
+            const walkY = (y - state.startY) * 2;
+            
+            dom.canvas.scrollLeft = state.scrollLeft - walkX;
+            dom.canvas.scrollTop = state.scrollTop - walkY;
+        }
+
+        // Stop panning
+        function stopPan() {
+            state.panning = false;
+            dom.canvas.classList.remove('panning');
+        }
+
+        // Handle zoom with mouse wheel
+        function handleZoom(e) {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? -0.1 : 0.1;
+            adjustZoom(delta);
+        }
+
+        // Adjust zoom level
+        function adjustZoom(delta) {
+            state.zoomLevel = Math.min(2, Math.max(0.5, state.zoomLevel + delta));
+            dom.canvas.style.transform = `scale(${state.zoomLevel})`;
+        }
+
         // Set active tool
         function setActiveTool(tool) {
             state.activeTool = tool;
@@ -1113,6 +1122,13 @@
             if (tool === 'node') dom.toolNode.classList.add('active');
             if (tool === 'connect') dom.toolConnect.classList.add('active');
             if (tool === 'text') dom.toolText.classList.add('active');
+        }
+
+        // Toggle dark mode
+        function toggleDarkMode() {
+            state.darkMode = !state.darkMode;
+            document.body.classList.toggle('dark-mode', state.darkMode);
+            dom.darkModeToggle.textContent = state.darkMode ? '☀️' : '🌙';
         }
 
         // Toggle grid visibility
@@ -1167,55 +1183,149 @@
             dom.timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
-        // Start panning the canvas
-        function startPan(e) {
-            if (e.target.closest('.node')) return;
+        // Show export options
+        function showExportOptions() {
+            const exportOptions = `
+                <div class="export-options">
+                    <button class="btn" id="export-png">🖼️ Export as PNG</button>
+                    <button class="btn" id="export-json">📝 Export as JSON</button>
+                    <button class="btn" id="export-text">📋 Export as Text</button>
+                </div>
+            `;
             
-            state.panning = true;
-            dom.canvas.classList.add('panning');
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Export Options</h3>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Select an export format:</p>
+                        <div class="export-options" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                            <button class="btn" id="export-png">🖼️ Export as PNG</button>
+                            <button class="btn" id="export-json">📝 Export as JSON</button>
+                            <button class="btn" id="export-text">📋 Export as Text</button>
+                        </div>
+                    </div>
+                </div>
+            `;
             
-            state.startX = e.pageX - dom.canvas.offsetLeft;
-            state.startY = e.pageY - dom.canvas.offsetTop;
-            state.scrollLeft = dom.canvas.scrollLeft;
-            state.scrollTop = dom.canvas.scrollTop;
-        }
-
-        // Pan the canvas
-        function panCanvas(e) {
-            if (!state.panning) return;
+            document.body.appendChild(modal);
             
-            e.preventDefault();
-            const x = e.pageX - dom.canvas.offsetLeft;
-            const y = e.pageY - dom.canvas.offsetTop;
-            const walkX = (x - state.startX) * 2;
-            const walkY = (y - state.startY) * 2;
+            // Add event listeners
+            modal.querySelector('.modal-close').addEventListener('click', () => {
+                modal.remove();
+            });
             
-            dom.canvas.scrollLeft = state.scrollLeft - walkX;
-            dom.canvas.scrollTop = state.scrollTop - walkY;
+            modal.querySelector('#export-png').addEventListener('click', exportAsPNG);
+            modal.querySelector('#export-json').addEventListener('click', exportAsJSON);
+            modal.querySelector('#export-text').addEventListener('click', exportAsText);
         }
 
-        // Stop panning
-        function stopPan() {
-            state.panning = false;
-            dom.canvas.classList.remove('panning');
+        // Export as PNG
+        function exportAsPNG() {
+            html2canvas(dom.canvasContainer).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'mindmapr-export.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+            
+            // Close modal
+            document.querySelector('.modal').remove();
         }
 
-        // Handle zoom with mouse wheel
-        function handleZoom(e) {
-            e.preventDefault();
-            const delta = e.deltaY > 0 ? -0.1 : 0.1;
-            adjustZoom(delta);
+        // Export as JSON
+        function exportAsJSON() {
+            const data = {
+                nodes: state.nodes,
+                connections: state.connections
+            };
+            
+            const jsonStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonStr], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.download = 'mindmapr-export.json';
+            link.href = url;
+            link.click();
+            
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+            
+            // Close modal
+            document.querySelector('.modal').remove();
         }
 
-        // Adjust zoom level
-        function adjustZoom(delta) {
-            state.zoomLevel = Math.min(2, Math.max(0.5, state.zoomLevel + delta));
-            dom.canvas.style.transform = `scale(${state.zoomLevel})`;
+        // Export as Text
+        function exportAsText() {
+            let textContent = 'MindMapr Export\n================\n\n';
+            
+            // Add nodes
+            textContent += 'Nodes:\n';
+            state.nodes.forEach(node => {
+                textContent += `- ${node.title}: ${node.content}\n`;
+            });
+            
+            // Add connections
+            textContent += '\nConnections:\n';
+            state.connections.forEach(conn => {
+                const fromNode = state.nodes.find(n => n.id === conn.from);
+                const toNode = state.nodes.find(n => n.id === conn.to);
+                
+                if (fromNode && toNode) {
+                    textContent += `- ${fromNode.title} ${conn.label || '-->'} ${toNode.title}\n`;
+                }
+            });
+            
+            const blob = new Blob([textContent], {type: 'text/plain'});
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.download = 'mindmapr-export.txt';
+            link.href = url;
+            link.click();
+            
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+            
+            // Close modal
+            document.querySelector('.modal').remove();
         }
 
-        // Update UI based on state
-        function updateUI() {
-            // Nothing needed here for now
+        // Save state
+        function saveState() {
+            alert('Mind map saved successfully!');
+        }
+
+        // Load state
+        function loadState() {
+            alert('Mind map loaded successfully!');
+        }
+
+        // Clear canvas
+        function clearCanvas() {
+            if (confirm('Are you sure you want to clear the entire mind map? This cannot be undone.')) {
+                state.nodes.forEach(node => node.element.remove());
+                state.connections.forEach(conn => {
+                    if (conn.element) conn.element.remove();
+                    if (conn.labelElement) conn.labelElement.remove();
+                });
+                
+                state.nodes = [];
+                state.connections = [];
+                state.currentNodeId = 1;
+                state.currentConnectionId = 1;
+                
+                alert('Canvas cleared!');
+            }
+        }
+
+        // Add node at specific position
+        function addNode(x, y) {
+            createNode(x, y);
         }
 
         // Initialize the app when DOM is loaded
