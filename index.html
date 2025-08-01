@@ -3,41 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindMapr - Retro Mind Mapping for Students</title>
+    <title>MindMapr - Professional Mind Mapping</title>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         :root {
-            --cream: #f0f0e6;
-            --light-blue: #87a0b0;
-            --dark-blue: #4a6274;
-            --gold: #d4a96a;
-            --pink: #d28282;
-            --teal: #5f9b93;
-            --node-bg: #ffffff;
-            --canvas-bg: var(--cream);
-            --text-dark: #333333;
-            --text-light: #ffffff;
-            --grid-color: rgba(74, 98, 116, 0.1);
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --background: #1a1a2e;
+            --primary: #162447;
+            --secondary: #1f4068;
+            --accent: #e43f5a;
+            --text: #f1f1f1;
+            --node-bg: #0f3460;
+            --grid-color: rgba(31, 64, 104, 0.2);
             --border-radius: 8px;
-            --retro-font: 'Courier New', 'Lucida Console', monospace;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: var(--retro-font);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #e6e2d7 0%, #d6d2c7 100%);
-            color: var(--text-dark);
+            background: var(--background);
+            color: var(--text);
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d4a96a' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            transition: var(--transition);
         }
 
         .app-container {
@@ -47,144 +42,226 @@
             overflow: hidden;
         }
 
-        /* Retro Header */
+        /* Header Styles - Professional Design */
         header {
-            background: var(--dark-blue);
-            color: white;
-            padding: 10px 20px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 12px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: var(--shadow);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             z-index: 100;
-            border-bottom: 3px solid var(--gold);
+            border-bottom: 1px solid rgba(229, 67, 90, 0.3);
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
 
         .logo-icon {
             font-size: 28px;
-            color: var(--gold);
+            background: var(--accent);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .logo h1 {
             font-size: 1.6rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         .controls {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
         }
 
         .btn {
-            background: transparent;
-            border: 2px solid var(--gold);
+            background: rgba(31, 64, 104, 0.7);
+            border: 1px solid rgba(229, 67, 90, 0.3);
             border-radius: var(--border-radius);
-            color: var(--gold);
-            padding: 8px 14px;
+            color: var(--text);
+            padding: 8px 16px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
+            gap: 8px;
+            transition: var(--transition);
             font-size: 14px;
-            text-transform: uppercase;
+            backdrop-filter: blur(5px);
         }
 
         .btn:hover {
-            background: var(--gold);
-            color: var(--dark-blue);
+            background: rgba(229, 67, 90, 0.3);
+            transform: translateY(-2px);
         }
 
         .btn i {
             font-size: 18px;
         }
 
-        /* Minimalist Sidebar */
+        .export-dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--primary);
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            z-index: 1;
+            min-width: 180px;
+            overflow: hidden;
+            border: 1px solid rgba(229, 67, 90, 0.3);
+        }
+
+        .export-dropdown:hover .dropdown-content {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-content button {
+            width: 100%;
+            padding: 10px 16px;
+            text-align: left;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .dropdown-content button:hover {
+            background: rgba(229, 67, 90, 0.2);
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text);
+            transition: transform 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .dark-mode-toggle:hover {
+            background: rgba(31, 64, 104, 0.3);
+            transform: rotate(15deg);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Sidebar Styles - Professional */
         .sidebar {
-            width: 260px;
-            background: rgba(255, 255, 255, 0.9);
-            border-right: 1px solid var(--light-blue);
-            padding: 15px;
+            width: 280px;
+            background: rgba(16, 22, 58, 0.8);
+            border-right: 1px solid rgba(229, 67, 90, 0.2);
+            padding: 20px;
             display: flex;
             flex-direction: column;
+            transition: var(--transition);
             overflow-y: auto;
             z-index: 50;
+            backdrop-filter: blur(5px);
         }
 
         .sidebar h2 {
             font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: var(--dark-blue);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px solid var(--gold);
-            padding-bottom: 8px;
+            margin-bottom: 20px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
         }
 
         .tools {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
         .tool-btn {
-            background: transparent;
-            border: 2px solid var(--light-blue);
+            background: rgba(31, 64, 104, 0.5);
+            border: 1px solid rgba(229, 67, 90, 0.3);
             border-radius: var(--border-radius);
-            padding: 12px;
+            padding: 15px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
-            color: var(--text-dark);
-            font-weight: 600;
+            gap: 12px;
+            color: var(--text);
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
         }
 
         .tool-btn:hover {
-            background: rgba(135, 160, 176, 0.1);
             transform: translateY(-3px);
+            border-color: var(--accent);
         }
 
         .tool-btn.active {
-            background: var(--light-blue);
-            color: white;
-            border-color: var(--gold);
+            background: rgba(229, 67, 90, 0.3);
+            border-color: var(--accent);
         }
 
         .tool-btn i {
-            font-size: 24px;
+            font-size: 28px;
         }
 
         .section {
-            margin-bottom: 20px;
-            padding: 12px;
-            background: rgba(249, 249, 249, 0.7);
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(31, 64, 104, 0.3);
             border-radius: var(--border-radius);
-            border: 1px solid rgba(135, 160, 176, 0.3);
+            border: 1px dashed rgba(229, 67, 90, 0.3);
         }
 
         .section-title {
             font-size: 1rem;
-            color: var(--dark-blue);
-            margin-bottom: 12px;
+            color: var(--text);
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-weight: 700;
+            gap: 10px;
+            font-weight: 500;
         }
 
         .color-palette {
@@ -195,32 +272,31 @@
         }
 
         .color-option {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             cursor: pointer;
-            border: 2px solid white;
-            transition: transform 0.3s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 2px solid var(--primary);
+            transition: var(--transition);
         }
 
         .color-option:hover {
-            transform: scale(1.2);
+            transform: scale(1.15);
         }
 
         .color-option.active {
-            border-color: var(--gold);
-            transform: scale(1.2);
-            box-shadow: 0 0 0 2px white, 0 0 0 4px var(--gold);
+            border-color: var(--accent);
+            transform: scale(1.15);
+            box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--accent);
         }
 
         .confidence-slider {
             width: 100%;
-            margin: 15px 0;
+            margin: 20px 0;
             -webkit-appearance: none;
-            height: 8px;
-            border-radius: 10px;
-            background: linear-gradient(to right, #f44336, #ff9800, #8bc34a);
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(to right, #e43f5a, #1f4068, #1a1a2e);
             outline: none;
         }
 
@@ -229,54 +305,55 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background: var(--gold);
-            border: 2px solid white;
+            background: var(--accent);
+            border: 2px solid var(--background);
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .timer-controls {
             display: flex;
-            gap: 8px;
-            margin-top: 12px;
+            gap: 10px;
+            margin-top: 15px;
         }
 
         .timer-btn {
             flex: 1;
             padding: 8px;
             border-radius: var(--border-radius);
-            border: 1px solid var(--light-blue);
-            background: transparent;
-            color: var(--dark-blue);
+            border: none;
+            background: rgba(31, 64, 104, 0.5);
+            color: var(--text);
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
+            font-weight: 500;
+            transition: var(--transition);
         }
 
         .timer-btn:hover {
-            background: var(--light-blue);
-            color: white;
+            background: rgba(229, 67, 90, 0.3);
+            transform: translateY(-2px);
         }
 
         .timer-display {
             text-align: center;
             font-size: 1.8rem;
-            font-weight: bold;
-            margin: 12px 0;
-            color: var(--dark-blue);
-            background: white;
-            padding: 8px;
+            font-weight: 600;
+            margin: 15px 0;
+            color: var(--text);
+            padding: 10px;
             border-radius: var(--border-radius);
-            border: 2px solid var(--gold);
-            font-family: var(--retro-font);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
         }
 
-        /* Canvas Area */
+        /* Canvas Area - Professional Design */
         .canvas-container {
             flex: 1;
             position: relative;
             overflow: hidden;
-            background-color: var(--canvas-bg);
+            background-color: var(--primary);
+            background-image: 
+                radial-gradient(circle at center, transparent 0%, rgba(31, 64, 104, 0.1) 100%);
         }
 
         #mindmap-canvas {
@@ -308,63 +385,58 @@
             z-index: 1;
         }
 
-        /* Retro Node Design */
         .node {
             position: absolute;
             background-color: var(--node-bg);
             border-radius: var(--border-radius);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(229, 67, 90, 0.3);
             min-width: 160px;
             min-height: 120px;
             cursor: move;
             z-index: 10;
             overflow: hidden;
-            transition: all 0.3s ease;
-            border: 2px solid var(--light-blue);
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(2px);
         }
 
         .node:hover {
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-            border-color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent);
         }
 
         .node-header {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--light-blue);
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(229, 67, 90, 0.2);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--dark-blue);
+            background: rgba(31, 64, 104, 0.5);
         }
 
         .node-title {
-            font-weight: 700;
+            font-weight: 600;
             cursor: text;
             outline: none;
             max-width: 80%;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            color: white;
+            color: var(--text);
             font-size: 16px;
             letter-spacing: 0.5px;
         }
 
         .node-controls {
             display: flex;
-            gap: 6px;
+            gap: 8px;
         }
 
         .node-btn {
-            background: transparent;
+            background: rgba(229, 67, 90, 0.2);
             border: none;
-            color: var(--gold);
+            color: var(--text);
             cursor: pointer;
             font-size: 16px;
             width: 24px;
@@ -372,37 +444,36 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
-            transition: all 0.2s;
+            border-radius: 4px;
+            transition: var(--transition);
         }
 
         .node-btn:hover {
-            color: white;
+            background: rgba(229, 67, 90, 0.3);
             transform: rotate(15deg);
         }
 
         .node-content {
-            padding: 12px;
+            padding: 15px;
             min-height: 80px;
             cursor: text;
             outline: none;
-            background: white;
             font-size: 14px;
-            line-height: 1.4;
+            line-height: 1.5;
+            background: rgba(15, 52, 96, 0.5);
         }
 
         .node-resize {
             position: absolute;
             width: 16px;
             height: 16px;
-            background: var(--gold);
+            background: var(--accent);
             border-radius: 50%;
             bottom: 0;
             right: 0;
             cursor: nwse-resize;
             z-index: 20;
-            border: 2px solid white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            border: 2px solid var(--background);
         }
 
         .connection {
@@ -410,20 +481,20 @@
             pointer-events: none;
             z-index: 5;
             height: 3px;
-            background: var(--pink);
+            background: var(--accent);
             transform-origin: 0 0;
         }
 
         .connection:after {
             content: '';
             position: absolute;
-            right: -8px;
-            top: -4px;
+            right: -10px;
+            top: -5px;
             width: 0;
             height: 0;
-            border-top: 5px solid transparent;
-            border-bottom: 5px solid transparent;
-            border-left: 10px solid var(--pink);
+            border-top: 7px solid transparent;
+            border-bottom: 7px solid transparent;
+            border-left: 14px solid var(--accent);
         }
 
         .add-node-btn {
@@ -433,23 +504,22 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: var(--dark-blue);
-            color: var(--gold);
-            border: 3px solid var(--gold);
-            font-size: 30px;
+            background: var(--accent);
+            color: var(--text);
+            border: none;
+            font-size: 32px;
             cursor: pointer;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             z-index: 100;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .add-node-btn:hover {
-            transform: rotate(90deg);
-            background: var(--gold);
-            color: var(--dark-blue);
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 20px rgba(228, 63, 90, 0.5);
         }
 
         .zoom-controls {
@@ -463,145 +533,80 @@
         }
 
         .zoom-btn {
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: var(--dark-blue);
-            color: var(--gold);
-            border: 2px solid var(--gold);
+            background: rgba(31, 64, 104, 0.7);
+            color: var(--text);
+            border: 1px solid rgba(229, 67, 90, 0.3);
             font-size: 20px;
             cursor: pointer;
-            box-shadow: var(--shadow);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
         }
 
         .zoom-btn:hover {
-            background: var(--gold);
-            color: var(--dark-blue);
+            transform: scale(1.1);
+            background: rgba(229, 67, 90, 0.3);
         }
 
         .connection-label {
             position: absolute;
-            background: white;
-            padding: 4px 12px;
-            border-radius: 30px;
+            background: var(--node-bg);
+            padding: 6px 12px;
+            border-radius: 20px;
             font-size: 12px;
             pointer-events: none;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             z-index: 15;
-            border: 1px solid var(--gold);
-            font-weight: 600;
-            color: var(--dark-blue);
+            border: 1px solid var(--accent);
+            font-weight: 500;
+            color: var(--text);
             text-align: center;
             min-width: 70px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
         .confidence-display {
-            height: 10px;
-            background: #e9ecef;
-            border-radius: 5px;
+            height: 8px;
+            background: rgba(31, 64, 104, 0.5);
+            border-radius: 4px;
             margin-top: 10px;
             overflow: hidden;
-            border: 1px solid var(--light-blue);
+            border: 1px solid rgba(229, 67, 90, 0.2);
         }
 
         .confidence-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--light-blue), var(--dark-blue));
-            border-radius: 5px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            border-radius: 4px;
             transition: width 0.5s ease;
         }
 
-        /* Bubbles for interaction */
+        /* Bubble effect */
         .bubble {
             position: absolute;
             border-radius: 50%;
-            background: var(--gold);
-            opacity: 0.7;
+            background: rgba(229, 67, 90, 0.3);
             pointer-events: none;
             z-index: 1000;
-            animation: bubblePop 0.6s forwards;
+            animation: bubble-pop 0.6s forwards;
         }
 
-        @keyframes bubblePop {
-            0% { transform: scale(0); opacity: 0.7; }
-            50% { transform: scale(1.2); opacity: 0.4; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-
-        /* Retro Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-            width: 90%;
-            max-width: 450px;
-            max-height: 90vh;
-            overflow-y: auto;
-            border: 3px solid var(--gold);
-            padding: 20px;
-            position: relative;
-        }
-
-        .modal-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--light-blue);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--dark-blue);
-            border-radius: var(--border-radius) var(--border-radius) 0 0;
-            color: white;
-        }
-
-        .modal-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: var(--gold);
-            transition: transform 0.3s;
-        }
-
-        .modal-close:hover {
-            transform: rotate(90deg);
-        }
-
-        .modal-body {
-            padding: 20px;
-            background: white;
-        }
-
-        .modal-footer {
-            padding: 15px 20px;
-            border-top: 1px solid var(--light-blue);
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            background: rgba(240, 240, 230, 0.7);
-            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        @keyframes bubble-pop {
+            0% {
+                transform: scale(0);
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
         }
 
         /* Responsive Design */
@@ -642,8 +647,8 @@
     <div class="app-container">
         <header>
             <div class="logo">
-                <span class="logo-icon">🧠</span>
-                <h1>MindMapr Retro</h1>
+                <div class="logo-icon">🧠</div>
+                <h1>MindMapr Pro</h1>
             </div>
             <div class="controls">
                 <button class="btn" id="save-btn">
@@ -654,10 +659,23 @@
                     <i>📂</i>
                     <span>Load</span>
                 </button>
-                <button class="btn" id="export-btn">
-                    <i>📤</i>
-                    <span>Export</span>
-                </button>
+                <div class="export-dropdown">
+                    <button class="btn">
+                        <i>📤</i>
+                        <span>Export</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="export-png">
+                            <i>🖼️</i> Export as PNG
+                        </button>
+                        <button id="export-json">
+                            <i>📝</i> Export as JSON
+                        </button>
+                        <button id="export-text">
+                            <i>📋</i> Export as Text
+                        </button>
+                    </div>
+                </div>
                 <button class="btn" id="clear-btn">
                     <i>🧹</i>
                     <span>Clear</span>
@@ -668,7 +686,7 @@
 
         <div class="main-content">
             <div class="sidebar" id="sidebar">
-                <h2><i>🛠️</i> Mind Tools</h2>
+                <h2><i>🎨</i> Creative Tools</h2>
                 
                 <div class="tools">
                     <div class="tool-btn" id="tool-select">
@@ -691,15 +709,15 @@
                 
                 <div class="section">
                     <div class="section-title">
-                        <i>🎨</i> Idea Styling
+                        <i>🌈</i> Idea Colors
                     </div>
                     <div class="color-palette">
-                        <div class="color-option active" style="background-color: #FFFFFF;" data-color="#FFFFFF"></div>
-                        <div class="color-option" style="background-color: #e6b8b7;" data-color="#e6b8b7"></div>
-                        <div class="color-option" style="background-color: #d28282;" data-color="#d28282"></div>
-                        <div class="color-option" style="background-color: #87a0b0;" data-color="#87a0b0"></div>
-                        <div class="color-option" style="background-color: #5f9b93;" data-color="#5f9b93"></div>
-                        <div class="color-option" style="background-color: #d4d4c0;" data-color="#d4d4c0"></div>
+                        <div class="color-option active" style="background-color: #0f3460;" data-color="#0f3460"></div>
+                        <div class="color-option" style="background-color: #1f4068;" data-color="#1f4068"></div>
+                        <div class="color-option" style="background-color: #162447;" data-color="#162447"></div>
+                        <div class="color-option" style="background-color: #1a1a2e;" data-color="#1a1a2e"></div>
+                        <div class="color-option" style="background-color: #e43f5a;" data-color="#e43f5a"></div>
+                        <div class="color-option" style="background-color: #1b998b;" data-color="#1b998b"></div>
                     </div>
                 </div>
                 
@@ -715,7 +733,7 @@
                 
                 <div class="section">
                     <div class="section-title">
-                        <i>⏱️</i> Focus Timer
+                        <i>⏱️</i> Study Timer
                     </div>
                     <div class="timer-display" id="timer-display">25:00</div>
                     <div class="timer-controls">
@@ -726,15 +744,15 @@
                 
                 <div class="section">
                     <div class="section-title">
-                        <i>⚙️</i> Settings
+                        <i>✨</i> Special Modes
                     </div>
                     <div class="tool-btn" id="grid-toggle">
                         <i>🔳</i>
                         <span>Toggle Grid</span>
                     </div>
                     <div class="tool-btn" id="memory-mode">
-                        <i>🧠</i>
-                        <span>Memory Mode</span>
+                        <i>🤔</i>
+                        <span>Memory Game</span>
                     </div>
                 </div>
             </div>
@@ -769,13 +787,13 @@
             scrollLeft: 0,
             scrollTop: 0,
             activeTool: 'node',
-            nodeColor: '#FFFFFF',
+            nodeColor: '#0f3460',
             confidenceLevel: 80,
             darkMode: false,
             gridVisible: true,
             memoryMode: false,
             timerActive: false,
-            timerDuration: 25 * 60,
+            timerDuration: 25 * 60, // 25 minutes in seconds
             timerRemaining: 25 * 60,
             timerInterval: null
         };
@@ -792,8 +810,10 @@
             darkModeToggle: document.getElementById('dark-mode-toggle'),
             saveBtn: document.getElementById('save-btn'),
             loadBtn: document.getElementById('load-btn'),
-            exportBtn: document.getElementById('export-btn'),
             clearBtn: document.getElementById('clear-btn'),
+            exportPngBtn: document.getElementById('export-png'),
+            exportJsonBtn: document.getElementById('export-json'),
+            exportTextBtn: document.getElementById('export-text'),
             toolSelect: document.getElementById('tool-select'),
             toolNode: document.getElementById('tool-node'),
             toolConnect: document.getElementById('tool-connect'),
@@ -809,26 +829,10 @@
 
         // Initialize application
         function init() {
-            setupEventListeners();
             createSampleMindMap();
+            setupEventListeners();
             updateUI();
-        }
-
-        // Create bubbles effect
-        function createBubble(x, y, color) {
-            const bubble = document.createElement('div');
-            bubble.className = 'bubble';
-            bubble.style.left = `${x}px`;
-            bubble.style.top = `${y}px`;
-            bubble.style.backgroundColor = color;
-            bubble.style.width = `${Math.random() * 30 + 10}px`;
-            bubble.style.height = bubble.style.width;
-            
-            document.body.appendChild(bubble);
-            
-            setTimeout(() => {
-                bubble.remove();
-            }, 600);
+            createBubble(100, 100);
         }
 
         // Set up event listeners
@@ -838,33 +842,19 @@
             document.addEventListener('mouseup', stopPan);
             document.addEventListener('mousemove', panCanvas);
             dom.canvas.addEventListener('wheel', handleZoom);
+            dom.canvas.addEventListener('click', createBubbleAtClick);
             
             // UI Controls
-            dom.addNodeBtn.addEventListener('click', () => {
-                const rect = dom.canvasContainer.getBoundingClientRect();
-                const x = rect.width / 2 - 80;
-                const y = rect.height / 2 - 60;
-                addNode(x, y);
-                
-                // Create bubbles at the click position
-                for (let i = 0; i < 5; i++) {
-                    setTimeout(() => {
-                        createBubble(
-                            rect.left + rect.width / 2, 
-                            rect.top + rect.height / 2,
-                            ['#d4a96a', '#87a0b0', '#d28282'][Math.floor(Math.random() * 3)]
-                        );
-                    }, i * 100);
-                }
-            });
-            
+            dom.addNodeBtn.addEventListener('click', addNode);
             dom.zoomInBtn.addEventListener('click', () => adjustZoom(0.1));
             dom.zoomOutBtn.addEventListener('click', () => adjustZoom(-0.1));
             dom.darkModeToggle.addEventListener('click', toggleDarkMode);
             dom.saveBtn.addEventListener('click', saveState);
             dom.loadBtn.addEventListener('click', loadState);
-            dom.exportBtn.addEventListener('click', showExportOptions);
             dom.clearBtn.addEventListener('click', clearCanvas);
+            dom.exportPngBtn.addEventListener('click', exportAsPNG);
+            dom.exportJsonBtn.addEventListener('click', exportAsJSON);
+            dom.exportTextBtn.addEventListener('click', exportAsText);
             
             // Tool selection
             dom.toolSelect.addEventListener('click', () => setActiveTool('select'));
@@ -878,6 +868,7 @@
                     document.querySelector('.color-option.active').classList.remove('active');
                     option.classList.add('active');
                     state.nodeColor = option.dataset.color;
+                    createBubble(option.getBoundingClientRect().left, option.getBoundingClientRect().top);
                 });
             });
             
@@ -885,6 +876,7 @@
             dom.confidenceSlider.addEventListener('input', (e) => {
                 state.confidenceLevel = e.target.value;
                 document.querySelector('.confidence-fill').style.width = `${state.confidenceLevel}%`;
+                createBubble(e.target.getBoundingClientRect().left, e.target.getBoundingClientRect().top);
             });
             
             // Canvas options
@@ -902,13 +894,13 @@
             const centerY = dom.canvasContainer.clientHeight / 2 - 50;
             
             const mainNode = createNode(centerX, centerY, 'Main Concept', 'The central idea of your mind map');
-            const child1 = createNode(centerX - 200, centerY - 150, 'Key Aspects', 'Important elements related to the main concept');
-            const child2 = createNode(centerX + 200, centerY - 150, 'Research Areas', 'Topics to explore further');
-            const child3 = createNode(centerX - 200, centerY + 150, 'Applications', 'Practical uses of this concept');
+            const child1 = createNode(centerX - 200, centerY - 150, 'Key Aspect 1', 'Important details about this aspect');
+            const child2 = createNode(centerX + 200, centerY - 150, 'Key Aspect 2', 'Important details about this aspect');
+            const child3 = createNode(centerX - 200, centerY + 150, 'Related Concept', 'Other concepts connected to this');
             
             createConnection(mainNode.id, child1.id, 'includes');
             createConnection(mainNode.id, child2.id, 'leads to');
-            createConnection(mainNode.id, child3.id, 'applies to');
+            createConnection(mainNode.id, child3.id, 'connects to');
         }
 
         // Create a new node
@@ -940,10 +932,14 @@
             
             // Add event listeners for the new node
             const header = node.querySelector('.node-header');
+            const resizeHandle = node.querySelector('.node-resize');
             const deleteBtn = node.querySelector('[data-action="delete"]');
             
             header.addEventListener('mousedown', startDrag);
-            deleteBtn.addEventListener('click', () => deleteNode(nodeId));
+            resizeHandle.addEventListener('mousedown', startResize);
+            deleteBtn.addEventListener('click', () => {
+                deleteNode(nodeId);
+            });
             
             // Add to state
             state.nodes.push({
@@ -959,6 +955,7 @@
                 confidence: state.confidenceLevel
             });
             
+            createBubble(x + 50, y + 50);
             return state.nodes.find(n => n.id === nodeId);
         }
 
@@ -967,24 +964,20 @@
             const nodeIndex = state.nodes.findIndex(n => n.id === nodeId);
             if (nodeIndex !== -1) {
                 const node = state.nodes[nodeIndex];
+                node.element.remove();
                 
-                // Create bubbles at node position
-                const rect = node.element.getBoundingClientRect();
-                for (let i = 0; i < 8; i++) {
-                    setTimeout(() => {
-                        createBubble(
-                            rect.left + rect.width/2, 
-                            rect.top + rect.height/2,
-                            ['#d4a96a', '#87a0b0', '#d28282'][Math.floor(Math.random() * 3)]
-                        );
-                    }, i * 80);
-                }
+                // Remove any connections involving this node
+                state.connections = state.connections.filter(conn => {
+                    if (conn.from === nodeId || conn.to === nodeId) {
+                        if (conn.element) conn.element.remove();
+                        if (conn.labelElement) conn.labelElement.remove();
+                        return false;
+                    }
+                    return true;
+                });
                 
-                // Remove after animation
-                setTimeout(() => {
-                    node.element.remove();
-                    state.nodes.splice(nodeIndex, 1);
-                }, 800);
+                state.nodes.splice(nodeIndex, 1);
+                createBubble(node.x, node.y);
             }
         }
 
@@ -1026,6 +1019,44 @@
             return state.connections.find(c => c.id === connectionId);
         }
 
+        // Update connection position and appearance
+        function updateConnection(connectionId) {
+            const connection = state.connections.find(c => c.id === connectionId);
+            if (!connection) return;
+            
+            const fromNode = state.nodes.find(n => n.id === connection.from);
+            const toNode = state.nodes.find(n => n.id === connection.to);
+            
+            if (!fromNode || !toNode) return;
+            
+            const fromRect = fromNode.element.getBoundingClientRect();
+            const toRect = toNode.element.getBoundingClientRect();
+            const canvasRect = dom.canvas.getBoundingClientRect();
+            
+            // Calculate positions relative to canvas
+            const fromX = fromRect.left - canvasRect.left + fromRect.width / 2;
+            const fromY = fromRect.top - canvasRect.top + fromRect.height / 2;
+            const toX = toRect.left - canvasRect.left + toRect.width / 2;
+            const toY = toRect.top - canvasRect.top + toRect.height / 2;
+            
+            // Draw line
+            const length = Math.sqrt((toX - fromX) * (toX - fromX) + (toY - fromY) * (toY - fromY));
+            const angle = Math.atan2(toY - fromY, toX - fromX) * 180 / Math.PI;
+            
+            connection.element.style.width = `${length}px`;
+            connection.element.style.left = `${fromX}px`;
+            connection.element.style.top = `${fromY}px`;
+            connection.element.style.transform = `rotate(${angle}deg)`;
+            
+            // Position label
+            if (connection.labelElement) {
+                const labelX = (fromX + toX) / 2;
+                const labelY = (fromY + toY) / 2;
+                connection.labelElement.style.left = `${labelX - 40}px`;
+                connection.labelElement.style.top = `${labelY - 15}px`;
+            }
+        }
+
         // Start dragging a node
         function startDrag(e) {
             if (state.activeTool !== 'select' && state.activeTool !== 'node') return;
@@ -1051,6 +1082,13 @@
                 // Update position in state
                 node.x = startLeft + dx;
                 node.y = startTop + dy;
+                
+                // Update all connections for this node
+                state.connections.forEach(conn => {
+                    if (conn.from === node.id || conn.to === node.id) {
+                        updateConnection(conn.id);
+                    }
+                });
             }
             
             function stopDrag() {
@@ -1061,6 +1099,50 @@
             
             document.addEventListener('mousemove', drag);
             document.addEventListener('mouseup', stopDrag);
+        }
+
+        // Start resizing a node
+        function startResize(e) {
+            const nodeElement = e.target.closest('.node');
+            if (!nodeElement) return;
+            
+            const nodeId = parseInt(nodeElement.dataset.id);
+            const node = state.nodes.find(n => n.id === nodeId);
+            
+            const startX = e.clientX;
+            const startY = e.clientY;
+            const startWidth = node.element.offsetWidth;
+            const startHeight = node.element.offsetHeight;
+            
+            function resize(e) {
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                
+                const newWidth = Math.max(160, startWidth + dx);
+                const newHeight = Math.max(120, startHeight + dy);
+                
+                node.element.style.width = `${newWidth}px`;
+                node.element.style.height = `${newHeight}px`;
+                
+                // Update size in state
+                node.width = newWidth;
+                node.height = newHeight;
+                
+                // Update all connections for this node
+                state.connections.forEach(conn => {
+                    if (conn.from === node.id || conn.to === node.id) {
+                        updateConnection(conn.id);
+                    }
+                });
+            }
+            
+            function stopResize() {
+                document.removeEventListener('mousemove', resize);
+                document.removeEventListener('mouseup', stopResize);
+            }
+            
+            document.addEventListener('mousemove', resize);
+            document.addEventListener('mouseup', stopResize);
         }
 
         // Start panning the canvas
@@ -1135,12 +1217,25 @@
         function toggleGrid() {
             state.gridVisible = !state.gridVisible;
             dom.gridOverlay.style.display = state.gridVisible ? 'block' : 'none';
+            createBubble(dom.gridToggle.getBoundingClientRect().left, dom.gridToggle.getBoundingClientRect().top);
         }
 
         // Toggle memory mode
         function toggleMemoryMode() {
             state.memoryMode = !state.memoryMode;
             dom.memoryModeBtn.classList.toggle('active', state.memoryMode);
+            
+            state.nodes.forEach(node => {
+                const content = node.element.querySelector('.node-content');
+                if (state.memoryMode) {
+                    content.dataset.originalContent = content.innerHTML;
+                    content.innerHTML = '🤔 Click to reveal!';
+                } else {
+                    content.innerHTML = content.dataset.originalContent || '';
+                }
+            });
+            
+            createBubble(dom.memoryModeBtn.getBoundingClientRect().left, dom.memoryModeBtn.getBoundingClientRect().top);
         }
 
         // Start or pause timer
@@ -1154,6 +1249,7 @@
                 state.timerInterval = setInterval(updateTimer, 1000);
                 dom.timerStart.textContent = 'Pause';
             }
+            createBubble(dom.timerStart.getBoundingClientRect().left, dom.timerStart.getBoundingClientRect().top);
         }
 
         // Reset timer
@@ -1163,6 +1259,7 @@
             state.timerRemaining = state.timerDuration;
             updateTimerDisplay();
             dom.timerStart.textContent = 'Start';
+            createBubble(dom.timerReset.getBoundingClientRect().left, dom.timerReset.getBoundingClientRect().top);
         }
 
         // Update timer
@@ -1183,149 +1280,37 @@
             dom.timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
-        // Show export options
-        function showExportOptions() {
-            const exportOptions = `
-                <div class="export-options">
-                    <button class="btn" id="export-png">🖼️ Export as PNG</button>
-                    <button class="btn" id="export-json">📝 Export as JSON</button>
-                    <button class="btn" id="export-text">📋 Export as Text</button>
-                </div>
-            `;
+        // Create bubble animation
+        function createBubble(x, y) {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.style.left = `${x}px`;
+            bubble.style.top = `${y}px`;
+            document.body.appendChild(bubble);
             
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            modal.style.display = 'flex';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title">Export Options</h3>
-                        <button class="modal-close">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Select an export format:</p>
-                        <div class="export-options" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
-                            <button class="btn" id="export-png">🖼️ Export as PNG</button>
-                            <button class="btn" id="export-json">📝 Export as JSON</button>
-                            <button class="btn" id="export-text">📋 Export as Text</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            
-            // Add event listeners
-            modal.querySelector('.modal-close').addEventListener('click', () => {
-                modal.remove();
-            });
-            
-            modal.querySelector('#export-png').addEventListener('click', exportAsPNG);
-            modal.querySelector('#export-json').addEventListener('click', exportAsJSON);
-            modal.querySelector('#export-text').addEventListener('click', exportAsText);
+            // Remove bubble after animation completes
+            setTimeout(() => {
+                bubble.remove();
+            }, 600);
         }
 
-        // Export as PNG
-        function exportAsPNG() {
-            html2canvas(dom.canvasContainer).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'mindmapr-export.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            });
-            
-            // Close modal
-            document.querySelector('.modal').remove();
+        // Create bubble at click position
+        function createBubbleAtClick(e) {
+            createBubble(e.clientX, e.clientY);
         }
 
-        // Export as JSON
-        function exportAsJSON() {
-            const data = {
-                nodes: state.nodes,
-                connections: state.connections
-            };
-            
-            const jsonStr = JSON.stringify(data, null, 2);
-            const blob = new Blob([jsonStr], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
-            
-            const link = document.createElement('a');
-            link.download = 'mindmapr-export.json';
-            link.href = url;
-            link.click();
-            
-            setTimeout(() => URL.revokeObjectURL(url), 100);
-            
-            // Close modal
-            document.querySelector('.modal').remove();
-        }
-
-        // Export as Text
-        function exportAsText() {
-            let textContent = 'MindMapr Export\n================\n\n';
-            
-            // Add nodes
-            textContent += 'Nodes:\n';
-            state.nodes.forEach(node => {
-                textContent += `- ${node.title}: ${node.content}\n`;
-            });
-            
-            // Add connections
-            textContent += '\nConnections:\n';
-            state.connections.forEach(conn => {
-                const fromNode = state.nodes.find(n => n.id === conn.from);
-                const toNode = state.nodes.find(n => n.id === conn.to);
-                
-                if (fromNode && toNode) {
-                    textContent += `- ${fromNode.title} ${conn.label || '-->'} ${toNode.title}\n`;
-                }
-            });
-            
-            const blob = new Blob([textContent], {type: 'text/plain'});
-            const url = URL.createObjectURL(blob);
-            
-            const link = document.createElement('a');
-            link.download = 'mindmapr-export.txt';
-            link.href = url;
-            link.click();
-            
-            setTimeout(() => URL.revokeObjectURL(url), 100);
-            
-            // Close modal
-            document.querySelector('.modal').remove();
-        }
-
-        // Save state
-        function saveState() {
-            alert('Mind map saved successfully!');
-        }
-
-        // Load state
-        function loadState() {
-            alert('Mind map loaded successfully!');
-        }
-
-        // Clear canvas
-        function clearCanvas() {
-            if (confirm('Are you sure you want to clear the entire mind map? This cannot be undone.')) {
-                state.nodes.forEach(node => node.element.remove());
-                state.connections.forEach(conn => {
-                    if (conn.element) conn.element.remove();
-                    if (conn.labelElement) conn.labelElement.remove();
-                });
-                
-                state.nodes = [];
-                state.connections = [];
-                state.currentNodeId = 1;
-                state.currentConnectionId = 1;
-                
-                alert('Canvas cleared!');
-            }
-        }
-
-        // Add node at specific position
-        function addNode(x, y) {
+        // Add node at random position
+        function addNode() {
+            const containerRect = dom.canvasContainer.getBoundingClientRect();
+            const x = Math.random() * (containerRect.width - 200) + 100;
+            const y = Math.random() * (containerRect.height - 150) + 75;
             createNode(x, y);
+        }
+
+        // Update UI based on state
+        function updateUI() {
+            // Update confidence display
+            document.querySelector('.confidence-fill').style.width = `${state.confidenceLevel}%`;
         }
 
         // Initialize the app when DOM is loaded
